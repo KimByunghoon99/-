@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { background: #000; color: #fff; }
+    /* Mimic overlay.css multiview rules */
+    body.cqc-multiview-active {
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: #000 !important;
+    }
+    body.cqc-multiview-active > *:not(.cqc-multiview-container):not(.mv-close-btn) {
+      display: none !important;
+    }
+    .cqc-multiview-container {
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+      gap: 4px;
+      background: #222;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+    .cqc-multiview-container[data-grid="1"] {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+    .cqc-multiview-container[data-grid="2"] {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+    }
+    .cqc-multiview-container[data-grid="4"] {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+    .cqc-multiview-item {
+      position: relative;
+      background: #444;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .cqc-multiview-item iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body class="cqc-multiview-active">
+  <div class="cqc-multiview-container" data-grid="4">
+    <div class="cqc-multiview-item">1</div>
+    <div class="cqc-multiview-item">2</div>
+    <div class="cqc-multiview-item">3</div>
+    <div class="cqc-multiview-item">4</div>
+  </div>
+</body>
+</html>

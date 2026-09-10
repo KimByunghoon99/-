@@ -1,0 +1,935 @@
+/* 치지직 올인원 셀렉터 인스펙터 스타일 */
+
+.cqc-inspector-highlight {
+    position: absolute;
+    pointer-events: none;
+    z-index: 99999;
+    border: 2px dashed #00ffa3;
+    background-color: rgba(0, 255, 163, 0.15);
+    box-shadow: 0 0 8px rgba(0, 255, 163, 0.3);
+    transition: all 0.08s ease-out;
+    border-radius: 4px;
+}
+
+.cqc-inspector-badge {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid rgba(0, 255, 163, 0.5);
+    color: #00ffa3;
+    font-family: 'Consolas', monospace;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    pointer-events: none;
+}
+
+.cqc-inspector-guide {
+    position: absolute;
+    pointer-events: none;
+    z-index: 99998;
+    border: 2px dotted #ff007f;
+    background-color: rgba(255, 0, 127, 0.08);
+    box-shadow: 0 0 6px rgba(255, 0, 127, 0.2);
+    border-radius: 4px;
+}
+
+.cqc-inspector-guide-badge {
+    position: absolute;
+    bottom: -24px;
+    left: 0;
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid rgba(255, 0, 127, 0.5);
+    color: #ff007f;
+    font-family: 'Consolas', monospace;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    pointer-events: none;
+}
+
+.cqc-inspector-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 360px;
+    max-height: 600px;
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    z-index: 100000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    user-select: none;
+}
+
+.cqc-inspector-panel-header {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+}
+
+.cqc-inspector-panel-title {
+    font-size: 14px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00ffa3, #00b3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cqc-inspector-panel-close {
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.cqc-inspector-panel-close:hover {
+    color: #f56565;
+}
+
+.cqc-inspector-panel-body {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cqc-inspector-slot-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cqc-inspector-label {
+    font-size: 11px;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.cqc-inspector-select {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.cqc-inspector-select:focus {
+    border-color: #00ffa3;
+}
+
+.cqc-inspector-btn {
+    background: linear-gradient(135deg, #00ffa3, #00b3ff);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.cqc-inspector-btn:hover {
+    box-shadow: 0 0 12px rgba(0, 255, 163, 0.4);
+}
+
+.cqc-inspector-btn:active {
+    transform: scale(0.98);
+}
+
+.cqc-inspector-btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cqc-inspector-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+}
+
+.cqc-inspector-btn-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.cqc-inspector-candidate-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.cqc-inspector-candidate-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cqc-inspector-candidate-item:hover {
+    background: rgba(0, 255, 163, 0.05);
+    border-color: rgba(0, 255, 163, 0.3);
+}
+
+.cqc-inspector-candidate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cqc-inspector-strategy {
+    font-size: 11px;
+    color: #00b3ff;
+    font-weight: 600;
+}
+
+.cqc-inspector-match-badge {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.cqc-inspector-match-badge.unique {
+    background: rgba(0, 255, 163, 0.2);
+    color: #00ffa3;
+    border: 1px solid rgba(0, 255, 163, 0.3);
+}
+
+.cqc-inspector-match-badge.multi {
+    background: rgba(235, 94, 40, 0.2);
+    color: #eb5e28;
+    border: 1px solid rgba(235, 94, 40, 0.3);
+}
+
+.cqc-inspector-match-badge.zero {
+    background: rgba(255, 255, 255, 0.1);
+    color: #a0aec0;
+}
+
+.cqc-inspector-selector-text {
+    font-family: 'Consolas', monospace;
+    font-size: 11px;
+    word-break: break-all;
+    color: #e2e8f0;
+}
+
+.cqc-inspector-fiber-path {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.cqc-inspector-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    color: #a0aec0;
+    font-family: monospace;
+    font-size: 11px;
+}
+
+.cqc-inspector-breadcrumb span:not(:last-child)::after {
+    content: " >";
+    color: rgba(255, 255, 255, 0.3);
+    margin-left: 4px;
+}
+
+.cqc-inspector-breadcrumb span.active-component {
+    color: #00ffa3;
+    font-weight: 700;
+}
+
+.cqc-inspector-status {
+    font-size: 12px;
+    color: #a0aec0;
+    text-align: center;
+    padding: 8px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border: 1px dashed rgba(255,255,255,0.05);
+}
+
+.cqc-inspector-footer {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+/* 슬롯 리스트 및 아코디언 추가 스타일 */
+.cqc-inspector-group-header {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cqc-inspector-group-header:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.cqc-inspector-group-content {
+    padding: 6px 4px 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cqc-inspector-slot-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    gap: 6px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.cqc-inspector-slot-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cqc-inspector-slot-item.active {
+    border-color: rgba(0, 255, 163, 0.3);
+    background: rgba(0, 255, 163, 0.02);
+}
+
+.cqc-inspector-slot-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.cqc-inspector-slot-key {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e2e8f0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cqc-inspector-slot-value {
+    font-size: 9px;
+    color: #718096;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: monospace;
+}
+
+.cqc-inspector-slot-item.customized .cqc-inspector-slot-key {
+    color: #00ffa3;
+}
+
+.cqc-inspector-slot-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.cqc-inspector-btn-icon {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #a0aec0;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.cqc-inspector-btn-icon:hover {
+    background: rgba(0, 255, 163, 0.15);
+    color: #00ffa3;
+    border-color: #00ffa3;
+}
+
+.cqc-inspector-btn-icon.reset:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+/* 설명란/가이드박스 스타일 */
+.cqc-inspector-guide-box {
+    background: rgba(0, 179, 255, 0.06);
+    border: 1px solid rgba(0, 179, 255, 0.15);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cqc-inspector-guide-title {
+    font-weight: 700;
+    color: #00b3ff;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cqc-inspector-guide-item {
+    display: flex;
+    gap: 4px;
+    align-items: flex-start;
+}
+
+.cqc-inspector-guide-bullet {
+    color: #00b3ff;
+    font-weight: bold;
+}
+
+/* 라이트 모드 테마 대응 */
+html[data-theme="light"] .cqc-inspector-panel, html.theme_light .cqc-inspector-panel, body.theme_light .cqc-inspector-panel, body.cqc-light-theme .cqc-inspector-panel {
+    background: rgba(247, 250, 252, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #2d3748;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .cqc-inspector-panel-header, html.theme_light .cqc-inspector-panel-header, body.theme_light .cqc-inspector-panel-header, body.cqc-light-theme .cqc-inspector-panel-header {
+    background: rgba(0, 0, 0, 0.02);
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .cqc-inspector-panel-title, html.theme_light .cqc-inspector-panel-title, body.theme_light .cqc-inspector-panel-title, body.cqc-light-theme .cqc-inspector-panel-title {
+    background: linear-gradient(135deg, #0284c7, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="light"] .cqc-inspector-panel-close, html.theme_light .cqc-inspector-panel-close, body.theme_light .cqc-inspector-panel-close, body.cqc-light-theme .cqc-inspector-panel-close {
+    color: #718096;
+}
+
+html[data-theme="light"] .cqc-inspector-panel-close:hover, html.theme_light .cqc-inspector-panel-close:hover, body.theme_light .cqc-inspector-panel-close:hover, body.cqc-light-theme .cqc-inspector-panel-close:hover {
+    color: #e53e3e;
+}
+
+html[data-theme="light"] .cqc-inspector-group-header, html.theme_light .cqc-inspector-group-header, body.theme_light .cqc-inspector-group-header, body.cqc-light-theme .cqc-inspector-group-header {
+    background: rgba(0, 0, 0, 0.02);
+    color: #2d3748;
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .cqc-inspector-group-header:hover, html.theme_light .cqc-inspector-group-header:hover, body.theme_light .cqc-inspector-group-header:hover, body.cqc-light-theme .cqc-inspector-group-header:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item, html.theme_light .cqc-inspector-slot-item, body.theme_light .cqc-inspector-slot-item, body.cqc-light-theme .cqc-inspector-slot-item {
+    background: rgba(0, 0, 0, 0.01);
+    border-color: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item:hover, html.theme_light .cqc-inspector-slot-item:hover, body.theme_light .cqc-inspector-slot-item:hover, body.cqc-light-theme .cqc-inspector-slot-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.active, html.theme_light .cqc-inspector-slot-item.active, body.theme_light .cqc-inspector-slot-item.active, body.cqc-light-theme .cqc-inspector-slot-item.active {
+    border-color: rgba(0, 179, 255, 0.4);
+    background: rgba(0, 179, 255, 0.02);
+}
+
+html[data-theme="light"] .cqc-inspector-slot-key, html.theme_light .cqc-inspector-slot-key, body.theme_light .cqc-inspector-slot-key, body.cqc-light-theme .cqc-inspector-slot-key {
+    color: #1a202c;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-value, html.theme_light .cqc-inspector-slot-value, body.theme_light .cqc-inspector-slot-value, body.cqc-light-theme .cqc-inspector-slot-value {
+    color: #718096;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.customized .cqc-inspector-slot-key, html.theme_light .cqc-inspector-slot-item.customized .cqc-inspector-slot-key, body.theme_light .cqc-inspector-slot-item.customized .cqc-inspector-slot-key, body.cqc-light-theme .cqc-inspector-slot-item.customized .cqc-inspector-slot-key {
+    color: #0284c7;
+}
+
+html[data-theme="light"] .cqc-inspector-btn-icon, html.theme_light .cqc-inspector-btn-icon, body.theme_light .cqc-inspector-btn-icon, body.cqc-light-theme .cqc-inspector-btn-icon {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.06);
+    color: #4a5568;
+}
+
+html[data-theme="light"] .cqc-inspector-btn-icon:hover, html.theme_light .cqc-inspector-btn-icon:hover, body.theme_light .cqc-inspector-btn-icon:hover, body.cqc-light-theme .cqc-inspector-btn-icon:hover {
+    background: rgba(0, 179, 255, 0.15);
+    color: #0284c7;
+    border-color: #0284c7;
+}
+
+html[data-theme="light"] .cqc-inspector-status, html.theme_light .cqc-inspector-status, body.theme_light .cqc-inspector-status, body.cqc-light-theme .cqc-inspector-status {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.06);
+    color: #4a5568;
+}
+
+html[data-theme="light"] .cqc-inspector-fiber-path, html.theme_light .cqc-inspector-fiber-path, body.theme_light .cqc-inspector-fiber-path, body.cqc-light-theme .cqc-inspector-fiber-path {
+    background: rgba(0, 0, 0, 0.03);
+    color: #2d3748;
+}
+
+html[data-theme="light"] .cqc-inspector-breadcrumb, html.theme_light .cqc-inspector-breadcrumb, body.theme_light .cqc-inspector-breadcrumb, body.cqc-light-theme .cqc-inspector-breadcrumb {
+    color: #718096;
+}
+
+html[data-theme="light"] .cqc-inspector-breadcrumb span.active-component, html.theme_light .cqc-inspector-breadcrumb span.active-component, body.theme_light .cqc-inspector-breadcrumb span.active-component, body.cqc-light-theme .cqc-inspector-breadcrumb span.active-component {
+    color: #0284c7;
+}
+
+html[data-theme="light"] .cqc-inspector-candidate-item, html.theme_light .cqc-inspector-candidate-item, body.theme_light .cqc-inspector-candidate-item, body.cqc-light-theme .cqc-inspector-candidate-item {
+    background: rgba(0, 0, 0, 0.01);
+    border-color: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .cqc-inspector-candidate-item:hover, html.theme_light .cqc-inspector-candidate-item:hover, body.theme_light .cqc-inspector-candidate-item:hover, body.cqc-light-theme .cqc-inspector-candidate-item:hover {
+    background: rgba(0, 179, 255, 0.04);
+    border-color: rgba(0, 179, 255, 0.3);
+}
+
+html[data-theme="light"] .cqc-inspector-selector-text, html.theme_light .cqc-inspector-selector-text, body.theme_light .cqc-inspector-selector-text, body.cqc-light-theme .cqc-inspector-selector-text {
+    color: #2d3748;
+}
+
+html[data-theme="light"] .cqc-inspector-guide-box, html.theme_light .cqc-inspector-guide-box, body.theme_light .cqc-inspector-guide-box, body.cqc-light-theme .cqc-inspector-guide-box {
+    background: rgba(2, 132, 199, 0.05);
+    border-color: rgba(2, 132, 199, 0.15);
+    color: #4a5568;
+}
+
+html[data-theme="light"] .cqc-inspector-guide-title, html.theme_light .cqc-inspector-guide-title, body.theme_light .cqc-inspector-guide-title, body.cqc-light-theme .cqc-inspector-guide-title {
+    color: #0284c7;
+}
+
+html[data-theme="light"] .cqc-inspector-btn-disabled, html.theme_light .cqc-inspector-btn-disabled, body.theme_light .cqc-inspector-btn-disabled, body.cqc-light-theme .cqc-inspector-btn-disabled {
+    background: rgba(0, 0, 0, 0.05);
+    color: #a0aec0;
+}\n
+/* 슬롯 용도 설명 스타일 */
+.cqc-inspector-slot-desc {
+    font-size: 10px;
+    color: #a0aec0;
+    line-height: 1.3;
+    margin: 2px 0 4px 0;
+    word-break: keep-all;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-desc, html.theme_light .cqc-inspector-slot-desc, body.theme_light .cqc-inspector-slot-desc, body.cqc-light-theme .cqc-inspector-slot-desc {
+    color: #718096;
+}
+
+/* 스크롤바 디자인 */
+.cqc-inspector-panel-body::-webkit-scrollbar {
+    width: 6px;
+}
+.cqc-inspector-panel-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.cqc-inspector-panel-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+}
+.cqc-inspector-panel-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.24);
+}
+
+html[data-theme="light"] .cqc-inspector-panel-body::-webkit-scrollbar-thumb, html.theme_light .cqc-inspector-panel-body::-webkit-scrollbar-thumb, body.theme_light .cqc-inspector-panel-body::-webkit-scrollbar-thumb, body.cqc-light-theme .cqc-inspector-panel-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+}
+html[data-theme="light"] .cqc-inspector-panel-body::-webkit-scrollbar-thumb:hover, html.theme_light .cqc-inspector-panel-body::-webkit-scrollbar-thumb:hover, body.theme_light .cqc-inspector-panel-body::-webkit-scrollbar-thumb:hover, body.cqc-light-theme .cqc-inspector-panel-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
+}
+
+/* 라이트 모드 가이드 박스 불릿 대응 */
+html[data-theme="light"] .cqc-inspector-guide-bullet, html.theme_light .cqc-inspector-guide-bullet, body.theme_light .cqc-inspector-guide-bullet, body.cqc-light-theme .cqc-inspector-guide-bullet {
+    color: #0284c7;
+}
+
+/* 라이트 모드 하이라이트/가이드 뱃지 가독성 */
+html[data-theme="light"] .cqc-inspector-badge, html.theme_light .cqc-inspector-badge, body.theme_light .cqc-inspector-badge, body.cqc-light-theme .cqc-inspector-badge,
+html[data-theme="light"] .cqc-inspector-guide-badge, html.theme_light .cqc-inspector-guide-badge, body.theme_light .cqc-inspector-guide-badge, body.cqc-light-theme .cqc-inspector-guide-badge {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(2, 132, 199, 0.6);
+    color: #0284c7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .cqc-inspector-guide-badge, html.theme_light .cqc-inspector-guide-badge, body.theme_light .cqc-inspector-guide-badge, body.cqc-light-theme .cqc-inspector-guide-badge {
+    border-color: rgba(236, 72, 153, 0.6);
+    color: #db2777;
+}\n
+/* 2단 분할 레이아웃 스타일 추가 */
+.cqc-inspector-panel {
+    max-height: 640px !important;
+}
+
+.cqc-inspector-split-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.cqc-inspector-list-section {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 330px;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cqc-inspector-detail-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 2px 2px;
+    margin-top: 8px;
+    background: transparent;
+}
+
+.cqc-inspector-detail-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 라이트 모드 대응 상세 창 스타일 */
+html[data-theme="light"] .cqc-inspector-detail-section, html.theme_light .cqc-inspector-detail-section, body.theme_light .cqc-inspector-detail-section, body.cqc-light-theme .cqc-inspector-detail-section {
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .cqc-inspector-detail-card, html.theme_light .cqc-inspector-detail-card, body.theme_light .cqc-inspector-detail-card, body.cqc-light-theme .cqc-inspector-detail-card {
+    background: rgba(0, 0, 0, 0.01);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="light"] .cqc-inspector-detail-desc, html.theme_light .cqc-inspector-detail-desc, body.theme_light .cqc-inspector-detail-desc, body.cqc-light-theme .cqc-inspector-detail-desc {
+    color: #4a5568 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-detail-value-box, html.theme_light .cqc-inspector-detail-value-box, body.theme_light .cqc-inspector-detail-value-box, body.cqc-light-theme .cqc-inspector-detail-value-box {
+    background: rgba(0, 0, 0, 0.02) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-detail-value, html.theme_light .cqc-inspector-detail-value, body.theme_light .cqc-inspector-detail-value, body.cqc-light-theme .cqc-inspector-detail-value {
+    color: #2d3748 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-detail-placeholder, html.theme_light .cqc-inspector-detail-placeholder, body.theme_light .cqc-inspector-detail-placeholder, body.cqc-light-theme .cqc-inspector-detail-placeholder {
+    color: #718096 !important;
+    background: rgba(0, 0, 0, 0.01) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* SVG 아이콘 스타일 보정 */
+.cqc-inspector-group-header svg {
+    color: #00b3ff;
+    transition: color 0.2s;
+}
+
+.cqc-inspector-group-header:hover svg {
+    color: #00ffa3;
+}
+
+html[data-theme="light"] .cqc-inspector-group-header svg, html.theme_light .cqc-inspector-group-header svg, body.theme_light .cqc-inspector-group-header svg, body.cqc-light-theme .cqc-inspector-group-header svg {
+    color: #0284c7;
+}
+
+html[data-theme="light"] .cqc-inspector-group-header:hover svg, html.theme_light .cqc-inspector-group-header:hover svg, body.theme_light .cqc-inspector-group-header:hover svg, body.cqc-light-theme .cqc-inspector-group-header:hover svg {
+    color: #06b6d4;
+}
+
+.cqc-inspector-slot-key-text {
+    font-size: 11px;
+    font-weight: 600;
+}\n
+/* 슬롯 검색창 스타일 및 프리미엄 개편 */
+.cqc-inspector-search-container {
+    margin-bottom: 0px !important;
+    width: 100%;
+}
+
+.cqc-inspector-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.cqc-inspector-search-icon {
+    position: absolute;
+    left: 12px;
+    color: #718096;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+}
+
+.cqc-inspector-search-input {
+    width: 100%;
+    padding: 9px 12px 9px 32px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cqc-inspector-search-input:focus {
+    border-color: #00ffa3;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 3px rgba(0, 255, 163, 0.15);
+}
+
+/* 어색했던 cqc-inspector-slot-item의 정밀 리디자인 (Consolas monospace 제거, 부드러운 호버링) */
+.cqc-inspector-slot-item {
+    display: flex;
+    align-items: center;
+    padding: 7px 12px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-radius: 10px !important;
+    margin-bottom: 4px !important;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.cqc-inspector-slot-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(0, 255, 163, 0.2) !important;
+    transform: translateY(-0.5px);
+}
+
+.cqc-inspector-slot-item.active {
+    background: rgba(0, 255, 163, 0.08) !important;
+    border-color: #00ffa3 !important;
+    box-shadow: 0 4px 12px rgba(0, 255, 163, 0.15) !important;
+}
+
+.cqc-inspector-custom-dot {
+    color: #00ffa3;
+    font-size: 8px;
+    vertical-align: middle;
+    display: inline-block;
+    animation: cqc-pulse-green 2s infinite;
+}
+
+@keyframes cqc-pulse-green {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.cqc-inspector-slot-key-text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #e2e8f0 !important;
+    transition: color 0.2s;
+}
+
+.cqc-inspector-slot-item.active .cqc-inspector-slot-key-text {
+    color: #00ffa3 !important;
+}
+
+.cqc-inspector-slot-item.customized:not(.active) .cqc-inspector-slot-key-text {
+    color: #00ffaa !important;
+}
+
+/* 완벽한 프리미엄 화이트(라이트) 모드 세부 대응 */
+html[data-theme="light"] .cqc-inspector-panel, html.theme_light .cqc-inspector-panel, body.theme_light .cqc-inspector-panel, body.cqc-light-theme .cqc-inspector-panel {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    color: #1f2937 !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-search-input, html.theme_light .cqc-inspector-search-input, body.theme_light .cqc-inspector-search-input, body.cqc-light-theme .cqc-inspector-search-input {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    color: #1f2937 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-search-input:focus, html.theme_light .cqc-inspector-search-input:focus, body.theme_light .cqc-inspector-search-input:focus, body.cqc-light-theme .cqc-inspector-search-input:focus {
+    background: #ffffff !important;
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-search-icon, html.theme_light .cqc-inspector-search-icon, body.theme_light .cqc-inspector-search-icon, body.cqc-light-theme .cqc-inspector-search-icon {
+    color: #4a5568 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item, html.theme_light .cqc-inspector-slot-item, body.theme_light .cqc-inspector-slot-item, body.cqc-light-theme .cqc-inspector-slot-item {
+    background: rgba(0, 0, 0, 0.01) !important;
+    border-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item:hover, html.theme_light .cqc-inspector-slot-item:hover, body.theme_light .cqc-inspector-slot-item:hover, body.cqc-light-theme .cqc-inspector-slot-item:hover {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(2, 132, 199, 0.18) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.active, html.theme_light .cqc-inspector-slot-item.active, body.theme_light .cqc-inspector-slot-item.active, body.cqc-light-theme .cqc-inspector-slot-item.active {
+    background: rgba(2, 132, 199, 0.08) !important;
+    border-color: #0284c7 !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-key-text, html.theme_light .cqc-inspector-slot-key-text, body.theme_light .cqc-inspector-slot-key-text, body.cqc-light-theme .cqc-inspector-slot-key-text {
+    color: #2d3748 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.active .cqc-inspector-slot-key-text, html.theme_light .cqc-inspector-slot-item.active .cqc-inspector-slot-key-text, body.theme_light .cqc-inspector-slot-item.active .cqc-inspector-slot-key-text, body.cqc-light-theme .cqc-inspector-slot-item.active .cqc-inspector-slot-key-text {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.customized:not(.active) .cqc-inspector-slot-key-text, html.theme_light .cqc-inspector-slot-item.customized:not(.active) .cqc-inspector-slot-key-text, body.theme_light .cqc-inspector-slot-item.customized:not(.active) .cqc-inspector-slot-key-text, body.cqc-light-theme .cqc-inspector-slot-item.customized:not(.active) .cqc-inspector-slot-key-text {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-custom-dot, html.theme_light .cqc-inspector-custom-dot, body.theme_light .cqc-inspector-custom-dot, body.cqc-light-theme .cqc-inspector-custom-dot {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-match-badge.unique, html.theme_light .cqc-inspector-match-badge.unique, body.theme_light .cqc-inspector-match-badge.unique, body.cqc-light-theme .cqc-inspector-match-badge.unique {
+    background: rgba(16, 185, 129, 0.12) !important;
+    color: #059669 !important;
+    border: 1px solid rgba(16, 185, 129, 0.24) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-match-badge.multi, html.theme_light .cqc-inspector-match-badge.multi, body.theme_light .cqc-inspector-match-badge.multi, body.cqc-light-theme .cqc-inspector-match-badge.multi {
+    background: rgba(245, 158, 11, 0.12) !important;
+    color: #d97706 !important;
+    border: 1px solid rgba(245, 158, 11, 0.24) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-match-badge.zero, html.theme_light .cqc-inspector-match-badge.zero, body.theme_light .cqc-inspector-match-badge.zero, body.cqc-light-theme .cqc-inspector-match-badge.zero {
+    background: rgba(107, 114, 128, 0.08) !important;
+    color: #6b7280 !important;
+    border: 1px solid rgba(107, 114, 128, 0.15) !important;
+}\n
+/* 검색창과 가이드 박스 간격 보정 */
+.cqc-inspector-search-container {
+    margin-bottom: 0px !important;
+}
+
+/* 슬롯 리스트 한글 이름 및 서브 영문 키 텍스트 스타일 */
+.cqc-inspector-slot-name-text {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #e2e8f0;
+    transition: color 0.2s;
+}
+
+.cqc-inspector-slot-key-sub {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.35);
+    font-family: monospace;
+    margin-left: 5px;
+    transition: color 0.2s;
+}
+
+.cqc-inspector-slot-item.active .cqc-inspector-slot-name-text {
+    color: #00ffa3 !important;
+}
+
+.cqc-inspector-slot-item.active .cqc-inspector-slot-key-sub {
+    color: rgba(0, 255, 163, 0.5) !important;
+}
+
+/* 라이트 모드 대응 */
+html[data-theme="light"] .cqc-inspector-slot-name-text, html.theme_light .cqc-inspector-slot-name-text, body.theme_light .cqc-inspector-slot-name-text, body.cqc-light-theme .cqc-inspector-slot-name-text {
+    color: #2d3748 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-key-sub, html.theme_light .cqc-inspector-slot-key-sub, body.theme_light .cqc-inspector-slot-key-sub, body.cqc-light-theme .cqc-inspector-slot-key-sub {
+    color: rgba(0, 0, 0, 0.45) !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.active .cqc-inspector-slot-name-text, html.theme_light .cqc-inspector-slot-item.active .cqc-inspector-slot-name-text, body.theme_light .cqc-inspector-slot-item.active .cqc-inspector-slot-name-text, body.cqc-light-theme .cqc-inspector-slot-item.active .cqc-inspector-slot-name-text {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .cqc-inspector-slot-item.active .cqc-inspector-slot-key-sub, html.theme_light .cqc-inspector-slot-item.active .cqc-inspector-slot-key-sub, body.theme_light .cqc-inspector-slot-item.active .cqc-inspector-slot-key-sub, body.cqc-light-theme .cqc-inspector-slot-item.active .cqc-inspector-slot-key-sub {
+    color: rgba(2, 132, 199, 0.6) !important;
+}

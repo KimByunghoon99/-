@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>단축키 설정 - 치지직 올인원</title>
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card: rgba(255, 255, 255, 0.03);
+      --card-hover: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #ffffff;
+      --text-dim: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #00ffa3;
+      --accent-glow: rgba(0, 255, 163, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font: 13px/1.6 "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    .sc-card {
+      width: 100%;
+      max-width: 480px;
+      background: #0f0f12;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+
+    .sc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sc-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sc-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .sc-action-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .sc-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .sc-action-btn:hover {
+      background: var(--card-hover);
+      border-color: var(--text-dim);
+    }
+
+    .sc-action-btn.active {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+    }
+
+    .sc-key-val {
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .sc-keyboard {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.015);
+      backdrop-filter: blur(10px);
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .sc-mods {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .sc-mod-btn {
+      min-width: 54px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      color: var(--text-dim);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sc-mod-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .sc-kb-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .sc-key {
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: #19191e;
+      color: var(--text-dim);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      user-select: none;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: all 0.15s ease;
+    }
+
+    .sc-key:hover {
+      background: #23232a;
+      border-color: var(--text-dim);
+      color: #fff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+    }
+
+    .sc-key:active {
+      transform: scale(0.92);
+    }
+
+    .sc-key.reserved {
+      border-color: rgba(255, 107, 107, 0.25);
+      color: #ff6b6b;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .sc-key.allocated {
+      border-color: #ffd43b;
+      color: #ffd43b;
+      background: rgba(255, 212, 59, 0.05);
+      box-shadow: 0 0 6px rgba(255, 212, 59, 0.15);
+    }
+
+    /* 피치 비율별 키 너비 정의 */
+    .sc-key.w-1-25 {
+      width: 34px;
+      font-size: 9px;
+    }
+
+    .sc-key.w-1-50 {
+      width: 41px;
+      font-size: 9px;
+    }
+
+    .sc-key.w-1-75 {
+      width: 49px;
+      font-size: 9px;
+    }
+
+    .sc-key.w-2-00 {
+      width: 56px;
+      font-size: 9px;
+    }
+
+    .sc-key.w-2-25 {
+      width: 64px;
+      font-size: 9px;
+    }
+
+    .sc-key.w-2-75 {
+      width: 79px;
+      font-size: 9px;
+    }
+
+    .sc-key.w-space {
+      width: 184px;
+      text-transform: none;
+    }
+
+    /* Fn 행 스타일 */
+    .sc-kb-row--fn {
+      justify-content: center;
+      gap: 3px;
+      margin-bottom: 5px;
+    }
+
+    .sc-kb-row--fn .sc-key {
+      width: 28px;
+      height: 24px;
+      font-size: 8px;
+      border-radius: 4px;
+    }
+
+    .sc-instruction {
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .sc-instruction.error,
+    #sc-status.error {
+      color: #ff6b6b;
+    }
+  </style>
+  <script type="module" crossorigin src="/shortcut.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/chunk.js">
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/assets/browser-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/assets/StorageBridge.js">
+</head>
+
+<body>
+  <div class="sc-card">
+    <div class="sc-header">
+      <h3 class="sc-title">단축키 설정</h3>
+    </div>
+
+    <div class="sc-body">
+      <div class="sc-action-list" id="sc-action-list">
+        <button class="sc-action-btn" data-action="screenshot">스크린샷 <span class="sc-key-val"
+            id="sc-val-screenshot">Ctrl+Shift+S</span></button>
+        <button class="sc-action-btn" data-action="record">화면 녹화 <span class="sc-key-val"
+            id="sc-val-record">Ctrl+Shift+R</span></button>
+        <button class="sc-action-btn" data-action="stats">스트림 통계 <span class="sc-key-val"
+            id="sc-val-stats">Ctrl+Shift+D</span></button>
+        <button class="sc-action-btn" data-action="backward">10초 되감기 <span class="sc-key-val"
+            id="sc-val-backward">[</span></button>
+        <button class="sc-action-btn" data-action="forward">10초 앞으로 감기 <span class="sc-key-val"
+            id="sc-val-forward">]</span></button>
+        <button class="sc-action-btn" data-action="chatCollector">채팅 모아보기 토글 <span class="sc-key-val"
+            id="sc-val-chatCollector">Ctrl+Shift+K</span></button>
+      </div>
+
+      <div class="sc-keyboard">
+        <div class="sc-mods">
+          <button class="sc-mod-btn" id="sc-mod-ctrl">Ctrl</button>
+          <button class="sc-mod-btn" id="sc-mod-shift">Shift</button>
+          <button class="sc-mod-btn" id="sc-mod-alt">Alt</button>
+        </div>
+
+        <div class="sc-kb-row sc-kb-row--fn">
+          <div class="sc-key" data-key="esc">ESC</div>
+          <div style="width: 10px;"></div>
+          <div class="sc-key" data-key="f1">F1</div>
+          <div class="sc-key" data-key="f2">F2</div>
+          <div class="sc-key" data-key="f3">F3</div>
+          <div class="sc-key" data-key="f4">F4</div>
+          <div style="width: 6px;"></div>
+          <div class="sc-key" data-key="f5">F5</div>
+          <div class="sc-key" data-key="f6">F6</div>
+          <div class="sc-key" data-key="f7">F7</div>
+          <div class="sc-key" data-key="f8">F8</div>
+          <div style="width: 6px;"></div>
+          <div class="sc-key" data-key="f9">F9</div>
+          <div class="sc-key" data-key="f10">F10</div>
+          <div class="sc-key" data-key="f11">F11</div>
+          <div class="sc-key" data-key="f12">F12</div>
+        </div>
+        <div class="sc-kb-row">
+          <div class="sc-key" data-key="`">~</div>
+          <div class="sc-key" data-key="1">1</div>
+          <div class="sc-key" data-key="2">2</div>
+          <div class="sc-key" data-key="3">3</div>
+          <div class="sc-key" data-key="4">4</div>
+          <div class="sc-key" data-key="5">5</div>
+          <div class="sc-key" data-key="6">6</div>
+          <div class="sc-key" data-key="7">7</div>
+          <div class="sc-key" data-key="8">8</div>
+          <div class="sc-key" data-key="9">9</div>
+          <div class="sc-key" data-key="0">0</div>
+          <div class="sc-key" data-key="-">-</div>
+          <div class="sc-key" data-key="=">=</div>
+          <div class="sc-key w-2-00" data-key="backspace">Back</div>
+        </div>
+
+        <div class="sc-kb-row">
+          <div class="sc-key w-1-50" data-key="tab">Tab</div>
+          <div class="sc-key" data-key="q">Q</div>
+          <div class="sc-key" data-key="w">W</div>
+          <div class="sc-key" data-key="e">E</div>
+          <div class="sc-key" data-key="r">R</div>
+          <div class="sc-key" data-key="t">T</div>
+          <div class="sc-key" data-key="y">Y</div>
+          <div class="sc-key" data-key="u">U</div>
+          <div class="sc-key" data-key="i">I</div>
+          <div class="sc-key" data-key="o">O</div>
+          <div class="sc-key" data-key="p">P</div>
+          <div class="sc-key" data-key="[">[</div>
+          <div class="sc-key" data-key="]">]</div>
+          <div class="sc-key w-1-50" data-key="\">\</div>
+        </div>
+
+        <div class="sc-kb-row">
+          <div class="sc-key w-1-75" data-key="capslock">Caps</div>
+          <div class="sc-key" data-key="a">A</div>
+          <div class="sc-key" data-key="s">S</div>
+          <div class="sc-key" data-key="d">D</div>
+          <div class="sc-key reserved" data-key="f" title="치지직 전체화면 예약키">F</div>
+          <div class="sc-key" data-key="g">G</div>
+          <div class="sc-key" data-key="h">H</div>
+          <div class="sc-key" data-key="j">J</div>
+          <div class="sc-key" data-key="k">K</div>
+          <div class="sc-key" data-key="l">L</div>
+          <div class="sc-key" data-key=";">;</div>
+          <div class="sc-key" data-key="'">'</div>
+          <div class="sc-key w-2-25" data-key="enter">Enter</div>
+        </div>
+        <div class="sc-kb-row">
+          <div class="sc-key w-2-25" data-key="shift">Shift</div>
+          <div class="sc-key" data-key="z">Z</div>
+          <div class="sc-key" data-key="x">X</div>
+          <div class="sc-key" data-key="c">C</div>
+          <div class="sc-key" data-key="v">V</div>
+          <div class="sc-key" data-key="b">B</div>
+          <div class="sc-key" data-key="n">N</div>
+          <div class="sc-key reserved" data-key="m" title="치지직 음소거 예약키">M</div>
+          <div class="sc-key" data-key=",">,</div>
+          <div class="sc-key" data-key=".">.</div>
+          <div class="sc-key" data-key="/">/</div>
+          <div class="sc-key w-2-75" data-key="shift">Shift</div>
+        </div>
+        <div class="sc-kb-row">
+          <div class="sc-key w-1-25" data-key="control">Ctrl</div>
+          <div class="sc-key w-1-25" data-key="meta">Win</div>
+          <div class="sc-key w-1-25" data-key="alt">Alt</div>
+          <div class="sc-key w-space reserved" data-key=" " title="치지직 재생/일시정지 예약키">Space</div>
+          <div class="sc-key w-1-25" data-key="alt">Alt</div>
+          <div class="sc-key w-1-25" data-key="meta">Win</div>
+          <div class="sc-key w-1-25" data-key="menu">Menu</div>
+          <div class="sc-key w-1-25" data-key="control">Ctrl</div>
+        </div>
+
+        <div class="sc-instruction">
+          설정할 항목을 선택한 뒤 키를 누르거나 아래 키보드를 클릭하세요.<br>
+          <span style="color:#ff6b6b">빨간 키</span>는 치지직 기본키라 조합키(Ctrl, Shift, Alt)가 필요합니다.<br>
+          <span style="color:#ffd93d">Delete</span> 또는 <span style="color:#ffd93d">Backspace</span>를 누르면 단축키를 해제합니다.
+        </div>
+        <div class="sc-instruction" id="sc-status">설정할 항목을 선택하세요.</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

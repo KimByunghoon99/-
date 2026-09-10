@@ -1,0 +1,101 @@
+{
+  "manifest_version": 3,
+  "name": "치지직 올인원",
+  "version": "1.5.0",
+  "description": "치지직 화질 자동 고정, 수동 선택 — PZP 플레이어 제어 확장.",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "tabs",
+    "notifications",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://chzzk.naver.com/*",
+    "https://api.chzzk.naver.com/*",
+    "https://*.pstatic.net/*",
+    "https://comm-api.game.naver.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "assets/ad-skip-loader.ts-loader.js"
+      ],
+      "matches": [
+        "*://chzzk.naver.com/*"
+      ],
+      "all_frames": true,
+      "run_at": "document_start"
+    },
+    {
+      "js": [
+        "assets/content.ts-loader.js"
+      ],
+      "matches": [
+        "*://chzzk.naver.com/*"
+      ],
+      "css": [
+        "overlay.css",
+        "sidebar-folder-modal.css",
+        "inspector.css",
+        "assets/ChatFilter.css",
+        "overlay.css",
+        "sidebar-folder-modal.css"
+      ],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "*://chzzk.naver.com/*"
+      ],
+      "resources": [
+        "ad-skip.js",
+        "injected.js",
+        "chat-mv.html",
+        "mock-mv.html",
+        "powerclick-stats.html",
+        "stream-stats.html",
+        "assets/*",
+        "icons/*",
+        "assets/chunk.js",
+        "assets/browser-polyfill.js",
+        "assets/ad-skip-loader.ts.js",
+        "assets/ChatFilter.js",
+        "assets/file-timestamp.js",
+        "assets/auto.js",
+        "assets/jsx-runtime.js",
+        "assets/settings-schema.js",
+        "assets/db.js",
+        "assets/StorageBridge.js",
+        "assets/content.ts.js"
+      ],
+      "use_dynamic_url": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "chzzk-quality-cqcv3@ext",
+      "strict_min_version": "113.0"
+    }
+  }
+}

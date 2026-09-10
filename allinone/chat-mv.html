@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>채팅 멀티뷰</title>
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --border: rgba(255,255,255,0.08);
+      --accent: #00ffa3;
+      --text-dim: #64748b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Pretendard Variable', -apple-system, 'Malgun Gothic', sans-serif;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── 툴바 ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      background: rgba(10,10,12,0.95);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      gap: 8px;
+    }
+    .toolbar__title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .toolbar__title svg { width: 14px; height: 14px; }
+    .toolbar__count {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .toolbar__btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 11px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+    }
+    .toolbar__btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ── 빈 상태 ── */
+    .empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+    .empty svg { width: 40px; height: 40px; opacity: 0.3; }
+
+    /* ── 그리드 ── */
+    .grid {
+      flex: 1;
+      display: grid;
+      gap: 3px;
+      padding: 3px;
+      background: #111;
+      overflow: hidden;
+    }
+
+    /* 채널 수에 따른 그리드 레이아웃 */
+    .grid[data-count="1"] { grid-template-columns: 1fr; }
+    .grid[data-count="2"] { grid-template-columns: repeat(2, 1fr); }
+    .grid[data-count="3"] { grid-template-columns: repeat(3, 1fr); }
+    .grid[data-count="4"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }
+    .grid[data-count="5"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+    .grid[data-count="6"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+
+    .grid__item {
+      position: relative;
+      background: #0f0f11;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    /* 5개일 때 마지막 아이템이 가운데 오도록 */
+    .grid[data-count="5"] .grid__item:last-child {
+      grid-column: 2 / 3;
+    }
+
+    .grid__item iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* 채널명 오버레이 */
+    .grid__label {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      pointer-events: none;
+      z-index: 10;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+  </style>
+  <script type="module" crossorigin src="/chat-mv.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/chunk.js">
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/assets/jsx-runtime.js">
+  <link rel="modulepreload" crossorigin href="/assets/browser-polyfill.js">
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>

@@ -1,0 +1,3991 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>치지직 올인원</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --bg-elevated: #111216;
+      --hdr-bg: rgba(10, 11, 13, 0.85);
+      --tabs-bg: rgba(14, 15, 19, 0.8);
+      --toggle-bg: #191b21;
+      --opt-card-bg: rgba(17, 18, 22, 0.4);
+      --opt-sub-bg: rgba(255, 255, 255, 0.01);
+      --sub-item-bg: rgba(255, 255, 255, 0.02);
+      --input-bg: #191b21;
+      --input-focus-bg: #111216;
+      --st-card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%);
+      --sec-head-bg: rgba(255, 255, 255, 0.01);
+      --sec-head-border: rgba(255, 255, 255, 0.02);
+      --card: rgba(255, 255, 255, 0.02);
+      --card-hover: rgba(255, 255, 255, 0.045);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(255, 255, 255, 0.12);
+      --border-active: rgba(0, 255, 163, 0.3);
+      --text: #f8fafc;
+      --text-dim: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #00ffa3;
+      --accent-hover: #00e692;
+      --accent-glow: rgba(0, 255, 163, 0.12);
+      --accent-text: #0b0c0f;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+
+      --h-input: 34px;
+      --h-btn: 34px;
+      --h-btn-xs: 24px;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f1f5f9;
+      --bg-elevated: #ffffff;
+      --hdr-bg: rgba(241, 245, 249, 0.88);
+      --tabs-bg: rgba(255, 255, 255, 0.88);
+      --toggle-bg: #cbd5e1;
+      --opt-card-bg: #ffffff;
+      --opt-sub-bg: rgba(0, 0, 0, 0.02);
+      --sub-item-bg: #f8fafc;
+      --input-bg: #ffffff;
+      --input-focus-bg: #ffffff;
+      --st-card-bg: #ffffff;
+      --sec-head-bg: rgba(0, 0, 0, 0.03);
+      --sec-head-border: rgba(0, 0, 0, 0.06);
+      --card: #ffffff;
+      --card-hover: #f1f5f9;
+      --border: rgba(0, 0, 0, 0.1);
+      --border-hover: rgba(0, 0, 0, 0.2);
+      --border-active: rgba(0, 180, 115, 0.4);
+      --text: #0f172a;
+      --text-dim: #475569;
+      --text-muted: #64748b;
+      --accent: #00b875;
+      --accent-hover: #009e64;
+      --accent-glow: rgba(0, 200, 130, 0.15);
+      --accent-text: #ffffff;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 600px;
+      overflow: hidden;
+    }
+
+    body {
+      width: 100%;
+      min-width: 380px;
+      max-width: 600px;
+      height: 100%;
+      margin: 0 auto;
+      font-family: 'Pretendard Variable', -apple-system, 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 12.5px;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-font-smoothing: antialiased;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    @media (max-width: 400px) {
+      body {
+        border-left: none;
+        border-right: none;
+      }
+    }
+
+    /* Scrollbar Customization */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* ── Header ── */
+    .hdr {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: var(--hdr-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.scroll-down .hdr {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hdr__left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hdr__icon {
+      width: 18px;
+      height: 18px;
+      color: var(--accent);
+      filter: drop-shadow(0 0 6px var(--accent-glow));
+    }
+
+    .hdr__title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hdr__version {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-left: 5px;
+      font-weight: 600;
+    }
+
+    .hdr__right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hdr__discord {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      color: var(--text-dim);
+      background: transparent;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      flex-shrink: 0;
+      border: 1px solid transparent;
+    }
+
+    .hdr__discord:hover {
+      color: #5865F2;
+      background: rgba(88, 101, 242, 0.1);
+      border-color: rgba(88, 101, 242, 0.2);
+    }
+
+    .hdr__discord svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Toggle Switch */
+    .toggle {
+      position: relative;
+      width: 42px;
+      height: 22px;
+      background: var(--toggle-bg);
+      border-radius: 22px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      outline: none;
+    }
+
+    .toggle::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: #64748b;
+      border-radius: 50%;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .toggle[aria-checked="true"] {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+    }
+
+    .toggle[aria-checked="true"]::before {
+      transform: translateX(20px);
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .toggle--sm {
+      width: 30px;
+      height: 16px;
+    }
+
+    .toggle--sm::before {
+      width: 10px;
+      height: 10px;
+      top: 2px;
+      left: 2px;
+    }
+
+    .toggle--sm[aria-checked="true"]::before {
+      transform: translateX(14px);
+    }
+
+    .toggle:disabled,
+    .toggle[disabled] {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      position: sticky;
+      top: 65px;
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px;
+      background: var(--tabs-bg);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-md);
+      margin: 12px 12px 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.scroll-down .tabs {
+      top: 16px;
+      box-shadow: var(--shadow-lg), 0 0 15px rgba(0, 255, 163, 0.1);
+      border-color: rgba(0, 255, 163, 0.2);
+    }
+
+    .tabs__nav {
+      display: flex;
+      width: 100%;
+      gap: 2px;
+    }
+
+    .tabs .search-box-container {
+      margin: 0 !important;
+      padding: 0 2px 2px 2px;
+      width: 100%;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 6px 2px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text);
+    }
+
+    .tab-btn[aria-selected="true"] {
+      background: var(--accent);
+      color: var(--accent-text);
+      box-shadow: 0 2px 8px var(--accent-glow);
+      transform: scale(1.02) translateY(-0.5px);
+    }
+
+    .tab-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .tab-btn:hover .tab-icon {
+      transform: scale(1.1);
+    }
+
+    /* ── Search Bar Styles ── */
+    .search-box-container {
+      margin-bottom: 12px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0 12px;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      height: var(--h-input);
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .search-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--text-dim);
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .search-box input {
+      flex: 1;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 12px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-muted);
+    }
+
+    #opt-search-clear {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    #opt-search-clear:hover {
+      color: var(--text);
+    }
+
+    .search-status-bar {
+      margin-top: 6px;
+      font-size: 10.5px;
+      color: var(--accent);
+      font-weight: 600;
+      background: rgba(0, 255, 163, 0.04);
+      border: 1px solid rgba(0, 255, 163, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .search-highlight {
+      background: rgba(0, 255, 163, 0.25);
+      color: #ffffff;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    /* ── Collapsible Sections ── */
+    .sec-head {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin: 18px 0 10px 0;
+      width: 100%;
+      background: var(--sec-head-bg);
+      border: 1px solid var(--sec-head-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sec-head:hover {
+      background: rgba(255, 255, 255, 0.025);
+      border-color: var(--border);
+    }
+
+    .sec-head::after {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-right: 1.5px solid var(--text-dim);
+      border-bottom: 1.5px solid var(--text-dim);
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
+    .sec-head.collapsed::after {
+      transform: rotate(-45deg);
+    }
+
+    /* ── Main content ── */
+    main {
+      padding: 12px 14px 20px;
+    }
+
+    /* ── Status Section (Bento Style) ── */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .st-card {
+      background: var(--st-card-bg);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+    }
+
+    .st-card:hover {
+      background: var(--card-hover) !important;
+      border-color: rgba(0, 255, 163, 0.15) !important;
+      box-shadow: 0 2px 10px rgba(0, 255, 163, 0.03) !important;
+      transform: translateY(-0.5px) !important;
+    }
+
+    .st-card--wide {
+      grid-column: span 2;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+    }
+
+    .st-label {
+      font-size: 9.5px;
+      color: var(--text-dim);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .st-val {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .st-val--on {
+      color: var(--accent);
+    }
+
+    .st-dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      margin-right: 5px;
+      background: var(--text-muted);
+    }
+
+    .st-dot--on {
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    /* ── Section Title ── */
+    .sec-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sec-title svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+    }
+
+    /* ── Options Card ── */
+    .opt-card {
+      background: var(--opt-card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 6px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .opt-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--card);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .opt-item:hover {
+      background: var(--card-hover) !important;
+      border-color: rgba(0, 255, 163, 0.15) !important;
+      box-shadow: 0 2px 10px rgba(0, 255, 163, 0.03) !important;
+      transform: translateY(-0.5px) !important;
+    }
+
+    .opt-item--col {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+      padding: 10px 14px;
+    }
+
+    .opt-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      padding-right: 16px;
+    }
+
+    .opt-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      word-break: keep-all;
+    }
+
+    .opt-desc {
+      font-size: 10.5px;
+      color: var(--text-dim);
+      opacity: 0.75;
+      line-height: 1.4;
+      margin-top: 2px;
+      word-break: keep-all;
+    }
+
+    .power-ch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 160px;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin: 4px 0;
+      border-radius: var(--radius-sm);
+    }
+
+    .power-ch-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px;
+      background: var(--sub-item-bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .power-ch-item:hover {
+      background: var(--card-hover) !important;
+      border-color: rgba(0, 255, 163, 0.15) !important;
+      box-shadow: 0 2px 10px rgba(0, 255, 163, 0.03) !important;
+      transform: translateY(-0.5px) !important;
+    }
+
+    .power-ch-img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .power-ch-noimg {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .power-ch-name {
+      flex: 1;
+      font-size: 11.5px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .power-ch-count {
+      font-size: 10.5px;
+      color: var(--accent);
+      font-weight: 700;
+      min-width: 30px;
+      text-align: right;
+    }
+
+    .opt-sub {
+      background: var(--opt-sub-bg);
+      border-radius: var(--radius-md);
+      border: 0 solid transparent;
+      margin: 0;
+      max-height: 0;
+      overflow: hidden;
+      position: absolute;
+      pointer-events: none;
+      visibility: hidden;
+      opacity: 0;
+      transition: max-height 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.25s, margin 0.25s, border-width 0.25s, opacity 0.15s, visibility 0.25s, background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .opt-sub:hover {
+      background: var(--card-hover) !important;
+      border-color: rgba(0, 255, 163, 0.15) !important;
+      box-shadow: 0 2px 10px rgba(0, 255, 163, 0.03) !important;
+      transform: translateY(-0.5px) !important;
+    }
+
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub {
+      max-height: 500px;
+      padding: 6px;
+      margin-bottom: 4px;
+      border-width: 1px;
+      border-color: var(--border);
+      opacity: 1;
+      position: relative;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    /* ── Elements ── */
+    .sel {
+      padding: 0 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+      height: var(--h-input);
+    }
+
+    .sel:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+    }
+
+    .qgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .qb {
+      height: 36px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-dim);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .qb:hover {
+      background: var(--card-hover);
+      border-color: var(--text-muted);
+    }
+
+    .qb[aria-checked="true"] {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 255, 163, 0.08);
+    }
+
+    .qb.qb--current {
+      background: rgba(96, 165, 250, 0.08);
+      border-color: #60a5fa;
+      color: #60a5fa;
+      box-shadow: 0 0 8px rgba(96, 165, 250, 0.1);
+    }
+
+    .qb.qb--preferred {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 255, 163, 0.1);
+    }
+
+    .qb.qb--current.qb--preferred {
+      background: linear-gradient(135deg, rgba(0, 255, 163, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 255, 163, 0.15);
+    }
+
+    /* ── Actions ── */
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding-top: 6px;
+    }
+
+    .btn {
+      height: var(--h-btn);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .btn svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .btn:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+    }
+
+    .btn--pri {
+      background: var(--accent);
+      color: #0a0b0d;
+      border-color: var(--accent);
+    }
+
+    .btn--pri:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    .btn--xs {
+      height: var(--h-btn-xs);
+      padding: 0 10px;
+      font-size: 10px;
+      border-radius: 9999px;
+    }
+
+    .btn--danger {
+      color: #ff6b6b;
+      border-color: rgba(255, 107, 107, 0.2);
+      background: rgba(255, 107, 107, 0.05);
+    }
+
+    .btn--danger:hover {
+      background: rgba(255, 107, 107, 0.12);
+      border-color: #ff6b6b;
+      color: #fff;
+    }
+
+    .btn--sec {
+      background: rgba(148, 163, 184, 0.06);
+      border-color: rgba(148, 163, 184, 0.15);
+      color: var(--text-dim);
+    }
+
+    .btn--sec:hover {
+      background: rgba(148, 163, 184, 0.12);
+      border-color: var(--text-dim);
+      color: var(--text);
+    }
+
+    /* ── 필터 모듈 카드 시스템 ── */
+    .filter-module {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      margin: 0 0 10px;
+      transition: border-color 0.2s;
+    }
+
+    .filter-module+.filter-module {
+      margin-top: 8px;
+    }
+
+    .opt-card+.filter-module {
+      margin-top: 8px;
+    }
+
+    .filter-module:last-child {
+      margin-bottom: 4px;
+    }
+
+    .filter-module:hover {
+      background: var(--card-hover) !important;
+      border-color: rgba(0, 255, 163, 0.15) !important;
+      box-shadow: 0 2px 10px rgba(0, 255, 163, 0.03) !important;
+      transform: translateY(-0.5px) !important;
+    }
+
+    .filter-module__head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .filter-module__head svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+
+    .filter-module__head .fm-icon--kw {
+      color: #ff6b6b;
+    }
+
+    .filter-module__head .fm-icon--user {
+      color: #60a5fa;
+    }
+
+    .filter-module__head .fm-icon--role {
+      color: #c084fc;
+    }
+
+    .filter-module__head .fm-icon--os {
+      color: #fbbf24;
+    }
+
+    .filter-module__count {
+      margin-left: auto;
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: var(--sub-item-bg);
+      padding: 1px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .filter-module__body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* ── 태그 시스템 (캡슐형) ── */
+    .tags-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tags-box:empty {
+      display: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 10.5px;
+      font-weight: 600;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 170px;
+    }
+
+    .tag__text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tag--kw {
+      background: rgba(255, 107, 107, 0.08);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 107, 107, 0.18);
+    }
+
+    .tag--kw:hover {
+      background: rgba(255, 107, 107, 0.15);
+      border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .tag--regex {
+      background: rgba(0, 255, 163, 0.06);
+      color: var(--accent);
+      border: 1px solid rgba(0, 255, 163, 0.18);
+    }
+
+    .tag--regex:hover {
+      background: rgba(0, 255, 163, 0.12);
+      border-color: rgba(0, 255, 163, 0.3);
+    }
+
+    .tag--user {
+      background: rgba(96, 165, 250, 0.08);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.18);
+    }
+
+    .tag--user:hover {
+      background: rgba(96, 165, 250, 0.15);
+      border-color: rgba(96, 165, 250, 0.3);
+    }
+
+    .tag__channel {
+      font-size: 8.5px;
+      font-weight: 500;
+      opacity: 0.6;
+      margin-left: 2px;
+      white-space: nowrap;
+    }
+
+    .tag__x,
+    .chat-tag__x,
+    .user-tag__x,
+    .layout-tag__x {
+      cursor: pointer;
+      opacity: 0.4;
+      transition: all 0.2s;
+      margin-left: 2px;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .tag:hover .tag__x,
+    .tag:hover .chat-tag__x,
+    .tag:hover .user-tag__x,
+    .tag:hover .layout-tag__x {
+      opacity: 1;
+    }
+
+    /* 집중 모드 닉네임 태그 */
+    .cf-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 8px;
+      background: rgba(0, 255, 163, 0.08);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      font-size: 9.5px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ── 엠프티 스테이트 ── */
+    .filter-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 10px 0;
+      color: var(--text-muted);
+      font-size: 10.5px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--sub-item-bg);
+    }
+
+    .filter-empty svg {
+      width: 12px;
+      height: 12px;
+      opacity: 0.4;
+    }
+
+    /* ── 입력 영역 ── */
+    .input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .input {
+      flex: 1;
+      padding: 0 12px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 11.5px;
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+      height: var(--h-input);
+    }
+
+    .input:focus {
+      border-color: var(--accent);
+      background: var(--input-focus-bg);
+      box-shadow: 0 0 6px var(--accent-glow), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+
+    .filter-btn {
+      height: var(--h-btn);
+      padding: 0 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .filter-btn--add {
+      background: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .filter-btn--add:hover {
+      background: var(--accent-hover);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    .filter-select {
+      height: var(--h-input);
+      padding: 0 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .filter-select:focus {
+      border-color: var(--accent);
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal {
+      width: 320px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-h {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .modal-error {
+      color: #ff6b6b;
+      font-size: 10.5px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+      animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Segment Control ── */
+    .segment {
+      display: flex;
+      background: var(--input-bg);
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .seg-btn {
+      flex: 1;
+      height: 28px;
+      border: none;
+      background: none;
+      color: var(--text-dim);
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .seg-btn:hover {
+      color: var(--text);
+    }
+
+    .seg-btn[aria-selected="true"] {
+      background: var(--card-hover);
+      color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Sub Sections in Cards */
+    .opt-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 8px 0;
+      height: 0;
+      display: block;
+    }
+
+    .opt-sub-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px 4px;
+      color: var(--text-dim);
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .opt-sub-head svg {
+      width: 13px;
+      height: 13px;
+      color: var(--accent);
+    }
+
+    .opt-sub-head .fm-icon--kw {
+      color: #ff6b6b;
+    }
+
+    .opt-sub-head .fm-icon--user {
+      color: #60a5fa;
+    }
+
+    .opt-sub-head .fm-icon--role {
+      color: #c084fc;
+    }
+
+    .opt-sub-head .fm-icon--os {
+      color: #fbbf24;
+    }
+
+    .opt-sub-head .filter-module__count {
+      margin-left: auto;
+    }
+
+    .opt-sub-body {
+      padding: 4px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .opt-sub .opt-sub-body {
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.2s ease;
+    }
+
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub .opt-sub-body,
+    .opt-item--has-sub[aria-expanded="true"]+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub+.opt-sub .opt-sub-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── 필터 그리드 (역할/기기) ── */
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      padding: 8px 10px;
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .filter-chip:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+    }
+
+    .filter-chip input {
+      display: none;
+    }
+
+    .filter-chip__indicator {
+      width: 13px;
+      height: 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 3.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      background: var(--sub-item-bg);
+      flex-shrink: 0;
+    }
+
+    .filter-chip__indicator::after {
+      content: '';
+      width: 3.5px;
+      height: 6px;
+      border: solid #000;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg) translate(-0.5px, -1px);
+      display: none;
+    }
+
+    .filter-chip input:checked+.filter-chip__indicator {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+    }
+
+    .filter-chip input:checked+.filter-chip__indicator::after {
+      display: block;
+    }
+
+    .filter-chip__label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+
+    .filter-chip:hover .filter-chip__label {
+      color: var(--text);
+    }
+
+    .filter-chip input:checked~.filter-chip__label {
+      color: var(--accent);
+    }
+
+    /* 역할별 포인트 컬러 */
+    .filter-chip--streamer input:checked+.filter-chip__indicator {
+      background: #c084fc;
+      border-color: #c084fc;
+      box-shadow: 0 0 6px rgba(192, 132, 252, 0.3);
+    }
+
+    .filter-chip--streamer input:checked~.filter-chip__label {
+      color: #c084fc;
+    }
+
+    .filter-chip--manager input:checked+.filter-chip__indicator {
+      background: #60a5fa;
+      border-color: #60a5fa;
+      box-shadow: 0 0 6px rgba(96, 165, 250, 0.3);
+    }
+
+    .filter-chip--manager input:checked~.filter-chip__label {
+      color: #60a5fa;
+    }
+
+    .filter-chip--subscriber input:checked+.filter-chip__indicator {
+      background: #fbbf24;
+      border-color: #fbbf24;
+      box-shadow: 0 0 6px rgba(251, 191, 36, 0.3);
+    }
+
+    .filter-chip--subscriber input:checked~.filter-chip__label {
+      color: #fbbf24;
+    }
+
+    .filter-chip--fan input:checked+.filter-chip__indicator {
+      background: #f472b6;
+      border-color: #f472b6;
+      box-shadow: 0 0 6px rgba(244, 114, 182, 0.3);
+    }
+
+    .filter-chip--fan input:checked~.filter-chip__label {
+      color: #f472b6;
+    }
+
+    /* Custom Checkbox */
+    .custom-chk {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 10.5px;
+      color: var(--text-dim);
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .custom-chk:hover {
+      color: var(--text);
+    }
+
+    .custom-chk input {
+      display: none;
+    }
+
+    .custom-chk .chk-box {
+      width: 13px;
+      height: 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 3.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--sub-item-bg);
+    }
+
+    .custom-chk input:checked+.chk-box {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+    }
+
+    .custom-chk .chk-box::after {
+      content: '';
+      width: 3px;
+      height: 6.5px;
+      border: solid #000;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg) translate(-0.5px, -1px);
+      display: none;
+    }
+
+    .custom-chk input:checked+.chk-box::after {
+      display: block;
+    }
+
+    /* 이모티콘 그리드 스타일 */
+    .emoji-pack-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .emoji-pack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 150px;
+    }
+
+    .emoji-pack__title {
+      font-size: 9.5px;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .emoji-tier-label {
+      font-size: 9px;
+      color: var(--text-dim);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+      gap: 4px;
+    }
+
+    .emoji-item {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      padding: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--sub-item-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emoji-item:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+    }
+
+    .emoji-item.active {
+      border-color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.08);
+      box-shadow: 0 0 6px rgba(255, 107, 107, 0.2);
+    }
+
+    .emoji-item img {
+      max-width: 100%;
+      max-height: 100%;
+      pointer-events: none;
+      object-fit: contain;
+    }
+
+    /* 더보기 버튼 및 접힘 스타일 */
+    .emoji-grid.collapsed {
+      max-height: 144px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .emoji-grid.collapsed .emoji-item:nth-child(n+37) {
+      display: none;
+    }
+
+    .emoji-grid.collapsed::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: linear-gradient(transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    .emoji-more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: fit-content;
+      margin: 6px auto 0;
+      padding: 4px 10px;
+      font-size: 10.5px;
+      color: var(--text-dim);
+      font-weight: 600;
+      background: var(--sub-item-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .emoji-more-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border-color: var(--border-active);
+      transform: translateY(-0.5px);
+    }
+
+    .emoji-more-btn svg {
+      width: 10px;
+      height: 10px;
+      transition: transform 0.25s ease;
+      stroke: currentColor;
+    }
+
+    .emoji-more-btn.expanded svg {
+      transform: rotate(180deg);
+    }
+
+    /* ── Shortcut Modal ── */
+    .shortcut-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .shortcut-modal.active {
+      display: flex;
+    }
+
+    .sc-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .sc-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sc-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sc-close {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .sc-close:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .sc-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sc-action-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .sc-action-btn {
+      padding: 8px 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .sc-action-btn:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+    }
+
+    .sc-action-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .sc-key-val {
+      font-weight: 700;
+      color: var(--accent);
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .sc-keyboard {
+      background: var(--sub-item-bg);
+      padding: 10px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .sc-kb-row {
+      display: flex;
+      justify-content: center;
+      gap: 3.5px;
+      margin-bottom: 3.5px;
+    }
+
+    .sc-key {
+      min-width: 30px;
+      height: 30px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+      user-select: none;
+      transition: all 0.1s;
+      text-transform: uppercase;
+    }
+
+    .sc-key:active {
+      transform: scale(0.95);
+    }
+
+    .sc-key.reserved {
+      opacity: 0.4;
+      border-color: rgba(255, 107, 107, 0.2);
+      color: #ff6b6b;
+      cursor: not-allowed;
+    }
+
+    .sc-key.w-15 {
+      width: 44px;
+    }
+
+    .sc-key.w-20 {
+      width: 60px;
+    }
+
+    .sc-key.w-space {
+      width: 140px;
+      text-transform: none;
+    }
+
+    .sc-instruction {
+      font-size: 10.5px;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .sc-mods {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .sc-mod-btn {
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text-dim);
+      font-size: 10.5px;
+      cursor: pointer;
+    }
+
+    .sc-mod-btn.active {
+      background: var(--accent);
+      color: #0b0c0f;
+      font-weight: 700;
+      border-color: var(--accent);
+    }
+
+    /* ── Utility Classes for Inline Style Removal ── */
+    .w-full {
+      width: 100% !important;
+    }
+
+    .m-0 {
+      margin: 0 !important;
+    }
+
+    .mt-4 {
+      margin-top: 4px !important;
+    }
+
+    .mt-6 {
+      margin-top: 6px !important;
+    }
+
+    .mt-8 {
+      margin-top: 8px !important;
+    }
+
+    .mt-10 {
+      margin-top: 10px !important;
+    }
+
+    .mt-12 {
+      margin-top: 12px !important;
+    }
+
+    .mt-14 {
+      margin-top: 14px !important;
+    }
+
+    .mt-16 {
+      margin-top: 16px !important;
+    }
+
+    .mb-12 {
+      margin-bottom: 12px !important;
+    }
+
+    .mb-14 {
+      margin-bottom: 14px !important;
+    }
+
+    .mb-16 {
+      margin-bottom: 16px !important;
+    }
+
+    .p-0 {
+      padding: 0 !important;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .flex {
+      display: flex !important;
+    }
+
+    .flex-col {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .flex-col-start {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 8px !important;
+    }
+
+    .flex-row-between {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
+
+    .align-center {
+      align-items: center !important;
+    }
+
+    .justify-between {
+      justify-content: space-between !important;
+    }
+
+    .flex-wrap {
+      flex-wrap: wrap !important;
+    }
+
+    .gap-6 {
+      gap: 6px !important;
+    }
+
+    .gap-8 {
+      gap: 8px !important;
+    }
+
+    .gap-10 {
+      gap: 10px !important;
+    }
+
+    .gap-12 {
+      gap: 12px !important;
+    }
+
+    .font-10 {
+      font-size: 10px !important;
+    }
+
+    .font-11 {
+      font-size: 11px !important;
+    }
+
+    .font-12 {
+      font-size: 12px !important;
+    }
+
+    .font-bold-700 {
+      font-weight: 700 !important;
+    }
+
+    .accent-border {
+      border-color: var(--border-active) !important;
+    }
+
+    .align-self-start {
+      align-self: flex-start !important;
+    }
+
+    .w-60p {
+      width: 60px !important;
+    }
+
+    .w-70p {
+      width: 70px !important;
+    }
+
+    .text-center {
+      text-align: center !important;
+    }
+
+    .text-muted {
+      color: var(--text-dim) !important;
+      opacity: 0.65;
+    }
+
+    .flex-1 {
+      flex: 1 !important;
+    }
+
+    .font-13 {
+      font-size: 13px !important;
+    }
+
+    .mb-6 {
+      margin-bottom: 6px !important;
+    }
+
+    .btn--fit {
+      width: auto !important;
+      padding: 0 12px !important;
+      flex-shrink: 0 !important;
+    }
+
+    .btn--inline-xs {
+      margin-left: 8px;
+      height: 18px !important;
+      font-size: 9px !important;
+      padding: 0 6px !important;
+      border-radius: 4px !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text-dim) !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn--inline-xs:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: var(--text) !important;
+    }
+
+    .input--sm {
+      height: 28px !important;
+      padding: 0 8px !important;
+    }
+
+    .mv-list-box {
+      min-height: 50px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border);
+    }
+
+    .following-box {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-md);
+      padding: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .col-span-full {
+      grid-column: 1 / -1 !important;
+    }
+
+    .text-danger {
+      color: #ff6b6b !important;
+    }
+
+    .text-danger-hard {
+      color: #ff4444 !important;
+    }
+
+    .text-info {
+      color: #60a5fa !important;
+    }
+
+    .text-accent {
+      color: var(--accent) !important;
+    }
+
+    .border-accent-glow {
+      border-color: rgba(0, 255, 163, 0.3) !important;
+    }
+
+    .-mt-4 {
+      margin-top: -4px !important;
+    }
+
+    .mb-8 {
+      margin-bottom: 8px !important;
+    }
+
+    .pb-20 {
+      padding-bottom: 20px !important;
+    }
+
+    .p-warning {
+      padding: 10px 16px 14px !important;
+    }
+
+    .p-backup {
+      padding: 16px 16px 20px !important;
+    }
+
+    .p-sub-body {
+      padding: 14px 16px !important;
+    }
+
+    .align-stretch {
+      align-items: stretch !important;
+    }
+
+    .align-start {
+      align-items: flex-start !important;
+    }
+
+    .w-50p {
+      width: 50px !important;
+    }
+
+    .h-32 {
+      height: 32px !important;
+    }
+
+    .btn--md {
+      height: 36px !important;
+    }
+
+    .btn--lg {
+      height: 40px !important;
+    }
+
+    .grid-col-1 {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+    }
+
+    .warning-banner {
+      display: flex !important;
+      align-items: flex-start !important;
+      gap: 8px !important;
+      background: rgba(251, 191, 36, 0.07) !important;
+      border: 1px solid rgba(251, 191, 36, 0.2) !important;
+      border-radius: 10px !important;
+      padding: 10px 12px !important;
+    }
+
+    .warning-banner__icon {
+      flex-shrink: 0 !important;
+      margin-top: 1px !important;
+      color: #fbbf24 !important;
+    }
+
+    .warning-banner__title {
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: #fbbf24 !important;
+      margin-bottom: 3px !important;
+    }
+
+    .warning-banner__desc {
+      font-size: 10px !important;
+      color: var(--text-dim) !important;
+      line-height: 1.5 !important;
+    }
+
+    .warning-banner__code {
+      margin-top: 6px !important;
+      padding: 5px 8px !important;
+      background: rgba(0, 0, 0, 0.3) !important;
+      border-radius: 6px !important;
+      font-family: monospace !important;
+      font-size: 10px !important;
+      color: #94a3b8 !important;
+      user-select: all !important;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/chunk.js"></script>
+  <script type="module" crossorigin src="/assets/modulepreload-polyfill.js"></script>
+  <script type="module" crossorigin src="/assets/file-timestamp.js"></script>
+  <script type="module" crossorigin src="/assets/browser-polyfill.js"></script>
+  <script type="module" crossorigin src="/assets/settings-schema.js"></script>
+  <script type="module" crossorigin src="/popup.js"></script>
+</head>
+
+<body>
+
+  <header class="hdr">
+    <div class="hdr__left">
+      <svg class="hdr__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
+      <h1 class="hdr__title">치지직 올인원<span class="hdr__version" id="ext-version">v1.3.5</span></h1>
+    </div>
+    <div class="hdr__right">
+      <a class="hdr__discord" href="https://discord.com/invite/WaeZajJJz9" target="_blank" rel="noopener"
+        title="디스코드 서버 참여">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <div class="tabs__nav" role="tablist">
+      <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-quality" id="tabbtn-quality">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+        화질
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-media" id="tabbtn-media">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 7l-7 5 7 5V7z" />
+          <rect x="1" y="5" width="15" height="12" rx="2" ry="2" />
+        </svg>
+        미디어
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-ui" id="tabbtn-ui">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <line x1="9" y1="9" x2="21" y2="9" />
+        </svg>
+        UI
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chat" id="tabbtn-chat">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        채팅·필터
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-multiview" id="tabbtn-multiview">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        멀티
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-advanced" id="tabbtn-advanced">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+        시스템
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Status Dashboard -->
+    <div class="status-grid">
+      <div class="st-card">
+        <span class="st-label">플레이어</span>
+        <span class="st-val" id="st-player"><span class="st-dot st-dot--on"></span>연결됨</span>
+      </div>
+      <div class="st-card">
+        <span class="st-label">그리드 우회</span>
+        <span class="st-val" id="st-grid">활성</span>
+      </div>
+      <div class="st-card">
+        <span class="st-label">현재 화질</span>
+        <span class="st-val" id="st-quality">1080p</span>
+      </div>
+      <div class="st-card">
+        <span class="st-label">레이턴시</span>
+        <span class="st-val" id="st-latency">1.2s</span>
+      </div>
+      <div class="st-card st-card--wide">
+        <span class="st-label">시스템 환경</span>
+        <span class="st-val font-10" id="st-env">HW 가속: 측정 불가</span>
+      </div>
+      <!-- Hidden or extra stats for context -->
+      <div style="display:none;">
+        <span id="st-mode"></span>
+        <span id="st-native"></span>
+        <span id="st-guard"></span>
+      </div>
+    </div>
+
+    <!-- ── 마스터 스위치 ── -->
+    <div class="opt-card mb-16 accent-border">
+      <div class="opt-item">
+        <div class="opt-info">
+          <span class="opt-label" style="font-weight:700;">확장 기능 활성화</span>
+          <span class="opt-desc">비활성화 시 모든 기능이 중단됩니다</span>
+        </div>
+        <button type="button" class="toggle" id="opt-enabled" role="switch" aria-checked="true"></button>
+      </div>
+    </div>
+
+    <!-- ── 검색 바 플레이스홀더 (스크롤 복구용) ── -->
+    <div id="search-placeholder" style="display: none;"></div>
+
+    <!-- ── 검색 바 ── -->
+    <div class="search-box-container mb-16">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="opt-search" placeholder="설정 옵션 검색..." autocomplete="off">
+        <button type="button" id="opt-search-clear" style="display: none;">&times;</button>
+      </div>
+      <div id="search-status" class="search-status-bar" style="display: none;"></div>
+    </div>
+    <!-- ═══ Tab 1: 화질 ═══ -->
+    <div id="tab-quality" class="tab-pane active" role="tabpanel">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          화질 컨트롤
+        </h2>
+      </div>
+
+      <div class="qgrid" id="qgrid"></div>
+
+      <div class="opt-card mt-16">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">그리드 우회 사용</span>
+            <span class="opt-desc">그리드 없이 1080p 시청</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-grid-bypass" role="switch"
+            aria-checked="true"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">화질 선택 버튼 표시</span>
+            <span class="opt-desc">화면 위 화질 선택 그리드 노출</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-grid-visible" role="switch"
+            aria-checked="true"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">자동 화질 고정</span>
+            <span class="opt-desc">항상 최상의 화질 유지</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-auto" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">선호 화질 설정</span>
+          </div>
+          <select class="sel" id="opt-preferred">
+            <option value="ABR">자동</option>
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p</option>
+            <option value="360">360p</option>
+            <option value="144">144p</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          저지연 및 지연 시간
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">저지연 모드 우선</span>
+            <span class="opt-desc">실시간 소통 최적화</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-ll" role="switch"></button>
+        </div>
+      </div>
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M23 4v6h-6" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          안정성 및 제어
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">자동 재적용</span>
+            <span class="opt-desc">순간적인 화질 저하 방지</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-reapply" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">강제 화질 전환</span>
+            <span class="opt-desc">수동 선택 무시 후 선호 화질로 즉시 재적용</span>
+          </div>
+          <button class="btn btn--pri btn--fit" id="btn-reapply">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
+            전환
+          </button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">팝업 상태 갱신</span>
+            <span class="opt-desc">플레이어 정보 다시 읽어옴</span>
+          </div>
+          <button class="btn btn--fit" id="btn-refresh">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 .49-3.8" />
+            </svg>
+            갱신
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Tab 2: 미디어 ═══ -->
+    <div id="tab-media" class="tab-pane" role="tabpanel">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          영상 최적화
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">화면 채우기</span>
+            <span class="opt-desc">영상의 여백(레터박스)을 없애고 가로 넓이에 맞춰 비율대로 화면을 꽉 채웁니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-video-fill" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">영상 선명도 필터</span><span class="opt-desc">채도·밝기 지능형 보정</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-sharpness" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">선명도 모드</span></div>
+          <select class="sel" id="opt-sharpness-mode">
+            <option value="default">기본</option>
+            <option value="natural">자연스러움</option>
+            <option value="custom">커스텀</option>
+          </select>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">숨김 모드</span><span class="opt-desc">내장 메뉴에서 제거</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-sharp-menu" role="switch"></button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13" />
+            <circle cx="6" cy="18" r="3" />
+            <circle cx="18" cy="16" r="3" />
+          </svg>
+          사운드 최적화
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">오디오 EQ 활성화</span><span class="opt-desc">9밴드 정밀 튜닝</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-audio" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">음향 프리셋</span></div>
+          <select class="sel" id="opt-audio-preset">
+            <option value="flat">플랫</option>
+            <option value="bass_boost">베이스 부스트</option>
+            <option value="treble_boost">고음 부스트</option>
+            <option value="vocal">보컬</option>
+            <option value="asmr_inner">ASMR (귀 속)</option>
+            <option value="asmr_outer">ASMR (귀 밖)</option>
+            <option value="night">나이트 모드</option>
+            <option value="live_concert">라이브 공연</option>
+            <option value="custom">커스텀</option>
+          </select>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">숨김 모드</span><span class="opt-desc">내장 메뉴에서 제거</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-audio-menu" role="switch"></button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polygon points="10 8 16 12 10 16 10 8" />
+          </svg>
+          플레이어 UI
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">커스텀 재생바</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-playback-bar" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">재생바 시간 표시</span>
+            <span class="opt-desc">재생바 좌측의 시간 오프셋 텍스트 노출</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-pb-time-enabled" role="switch"
+            aria-checked="true"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">LIVE 버튼 우측 상단 배치</span>
+            <span class="opt-desc">오른쪽 위 빨간 LIVE 버튼을 숨기고, 그 자리에 커스텀 시간 버튼을 배치합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-pb-time-top-right" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">네이티브 배속 메뉴 강제 노출</span>
+            <span class="opt-desc">라이브 방송 플레이어 설정 메뉴 내 배속 조절 기능 노출</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-playback-speed" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">시네마틱 앰비언트</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-ambient" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">볼륨 툴팁 표시</span><span class="opt-desc">볼륨 조절 시 툴팁 노출</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-volume-indicator" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">마우스 휠 볼륨 조절</span><span class="opt-desc">플레이어 위에서 휠로 음량
+              조절</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-wheel-volume" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">다시보기 당시 시간 표시</span><span class="opt-desc">타임라인 호버 시 실제 방송 시간
+              표시</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-vod-realtime-tooltip" role="switch"></button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          도구 및 기록
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item opt-item--has-sub" aria-expanded="true" id="opt-screenshot-container">
+          <div class="opt-info"><span class="opt-label">스크린샷</span><span class="opt-desc">단축키: Ctrl + Shift + S</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-screenshot" role="switch"></button>
+        </div>
+        <div class="opt-sub" id="opt-screenshot-sub">
+          <div class="opt-item opt-item--col">
+            <div class="opt-info w-full"><span class="opt-label">스크린샷 동작</span></div>
+            <div class="segment" id="opt-screenshot-action-seg">
+              <button type="button" class="seg-btn" data-value="save">파일로 저장</button>
+              <button type="button" class="seg-btn" data-value="clipboard">클립보드에 복사</button>
+            </div>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">녹화</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-recorder" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--col" id="opt-recorder-format-container">
+          <div class="opt-info w-full">
+            <span class="opt-label">녹화 포맷</span>
+            <span class="opt-desc">MP4 포맷은 일부 브라우저에서 지원되지 않을 수 있습니다</span>
+          </div>
+          <select class="sel w-full" id="opt-recorder-format">
+            <option value="webm">WebM (기본)</option>
+            <option value="mp4">MP4</option>
+          </select>
+        </div>
+        <div class="opt-item opt-item--col" id="opt-file-timestamp-container">
+          <div class="opt-info w-full">
+            <span class="opt-label">파일명 시간 포맷</span>
+            <span class="opt-desc">녹화·스크린샷·백업 파일에 사용되는 시간 형식</span>
+          </div>
+          <select class="sel w-full" id="opt-file-timestamp-format">
+            <option value="dash">대시 구분 (2026-06-20_21-55-05)</option>
+            <option value="dot">점 구분 (2026.06.20_21.55.05)</option>
+            <option value="korean">한글 단위 (2026년06월20일_21시55분05초)</option>
+            <option value="date-only">날짜만 (2026-06-20)</option>
+            <option value="unix">Unix Timestamp</option>
+          </select>
+        </div>
+        <div class="opt-item opt-item--col" id="opt-file-timestamp-timezone-container">
+          <div class="opt-info w-full">
+            <span class="opt-label">파일명 시간대</span>
+            <span class="opt-desc">파일명 타임스탬프의 기준 시간대</span>
+          </div>
+          <select class="sel w-full" id="opt-file-timestamp-timezone">
+            <option value="local">로컬 시간 (기본)</option>
+            <option value="utc">UTC (세계 협정시)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Tab 3: UI ═══ -->
+    <div id="tab-ui" class="tab-pane" role="tabpanel">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
+            <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M10 14h.01M14 14h.01M18 14h.01M10 18h4"></path>
+          </svg>
+          키보드 단축키
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">단축키 커스터마이징</span>
+            <span class="opt-desc">원하는 기능에 단축키를 할당하세요</span>
+          </div>
+          <button type="button" class="btn btn--sec btn--xs" id="btn-open-shortcut-modal">설정 열기</button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">키보드 탐색 시간 (ArrowLeft/Right)</span>
+            <span class="opt-desc">단축키로 영상 이동 시 탐색 시간 설정 (초)</span>
+          </div>
+          <input type="number" class="sel w-60p text-center" id="opt-playback-seek-time" min="1" max="60" step="1">
+        </div>
+      </div>
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <line x1="9" y1="3" x2="9" y2="21" />
+          </svg>
+          사이드바 최적화
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">사이드바 폴더</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-sidebar-folders" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">새로고침 시 폴더 상태</span>
+            <span class="opt-desc">페이지 최초 로드 시 폴더의 기본 상태를 결정합니다</span>
+          </div>
+          <select class="sel" id="opt-sidebar-folders-default-state">
+            <option value="remember">기존 상태 유지</option>
+            <option value="collapsed">모두 접힘</option>
+            <option value="expanded">모두 펼침</option>
+          </select>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">새로고침 시 오프라인 그룹 상태</span>
+            <span class="opt-desc">오프라인 그룹 폴더의 기본 상태를 결정합니다</span>
+          </div>
+          <select class="sel" id="opt-sidebar-offline-group-default-state">
+            <option value="collapsed">접힘</option>
+            <option value="expanded">펼침</option>
+            <option value="remember">기존 상태 유지</option>
+          </select>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">팔로잉 자동 갱신</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-following-refresh" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">팔로잉 목록 자동 펼치기</span><span class="opt-desc">더보기 버튼 자동 클릭</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-following-expand" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">오프라인 채널 숨기기</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-offline" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">오프라인 채널 접기</span><span class="opt-desc">오프라인 그룹 헤더 추가</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-offline-fold" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">사이드바 리사이즈</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-sidebar-resize" role="switch"></button>
+        </div>
+      </div>
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="9" y1="21" x2="9" y2="9" />
+          </svg>
+          레이아웃 및 뷰
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item opt-item--col opt-item--has-sub" aria-expanded="true" id="opt-layout-clean-container">
+          <div class="flex-row-between w-full">
+            <div class="opt-info"><span class="opt-label">단어 필터링 (레이아웃)</span><span class="opt-desc">사이드바 키워드 기반 섹션
+                숨김</span></div>
+            <button type="button" class="toggle" id="opt-layout-clean" role="switch" aria-checked="true"></button>
+          </div>
+          <div class="filter-grid gap-12 mt-12" id="layout-hide-sections">
+            <!-- popup.js에서 동적으로 채워짐 -->
+          </div>
+          <div class="tags-box mt-8" id="layout-cleanup-tags"></div>
+          <div class="input-row mt-8">
+            <input type="text" id="layout-cleanup-keyword" class="input" placeholder="숨길 키워드 입력">
+            <button class="btn btn--pri font-11" id="layout-cleanup-add" style="width: 50px; height: 32px;">추가</button>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-layout-clean-sub">
+          <div class="opt-sub-body">
+            <div class="opt-info mb-12">
+              <span class="opt-label">기본 메뉴 숨김</span>
+              <span class="opt-desc">좌측 메뉴 아이템을 숨깁니다 (최대 5개)</span>
+            </div>
+            <div class="filter-grid gap-12" id="layout-hide-menus">
+              <!-- popup.js에서 동적으로 채워짐 -->
+            </div>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-layout-clean-sub-header">
+          <div class="opt-sub-body">
+            <div class="opt-info mb-12">
+              <span class="opt-label">헤더 탭 숨김</span>
+              <span class="opt-desc">상단 헤더의 탭을 개별 숨깁니다</span>
+            </div>
+            <div class="filter-grid gap-12" id="layout-hide-header-tabs">
+              <!-- popup.js에서 동적으로 채워짐 -->
+            </div>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-layout-clean-sub-studio">
+          <div class="opt-sub-body flex-row-between">
+            <div class="opt-info">
+              <span class="opt-label">스튜디오 버튼 숨김</span>
+              <span class="opt-desc">헤더의 스튜디오 버튼을 숨깁니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-hide-studio-btn" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-layout-clean-sub-cheese">
+          <div class="opt-sub-body flex-row-between">
+            <div class="opt-info">
+              <span class="opt-label">치즈 버튼 숨김</span>
+              <span class="opt-desc">헤더의 치즈 버튼을 숨깁니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-hide-cheese-btn" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-layout-clean-sub-noti">
+          <div class="opt-sub-body flex-row-between">
+            <div class="opt-info">
+              <span class="opt-label">알림 버튼 숨김</span>
+              <span class="opt-desc">헤더의 알림 버튼을 숨깁니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-hide-noti-btn" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-layout-clean-sub-cheatkey">
+          <div class="opt-sub-body flex-row-between">
+            <div class="opt-info">
+              <span class="opt-label">치트키 버튼 숨김</span>
+              <span class="opt-desc">헤더의 치트키 버튼을 숨깁니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-hide-cheatkey-btn" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">화질 변경 알림 팝업</span>
+            <span class="opt-desc">화질 변경 시 플레이어 상단에 화질 적용 알림을 표시합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-noti" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">치지직 공지사항 아이콘</span>
+            <span class="opt-desc">상단 네비게이션에 공지사항 아이콘을 표시합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-notice-icon" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">시청 품질 분석 아이콘</span>
+            <span class="opt-desc">상단 네비게이션에 품질 분석 아이콘을 표시합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-stream-stats" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">자동 넓은 화면</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-wide-view" role="switch"></button>
+        </div>
+
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">정적 로고 고정</span><span class="opt-desc">움직이는 로고를 첫 프레임으로 고정</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-static-logo" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">무료 치즈 뽑기 숨기기</span>
+            <span class="opt-desc">우측 하단의 무료 치즈 뽑기(이벤트) 버튼을 숨깁니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-free-cheese" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">사이드바 방송 미리보기</span><span class="opt-desc">사이드바 영역의 라이브 채널에 마우스를
+              올려 미리 봅니다</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-hover-preview" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--has-sub" aria-expanded="true" id="opt-thumbnail-preview-container">
+          <div class="flex-row-between w-full">
+            <div class="opt-info">
+              <span class="opt-label">본문 영역 미리보기</span>
+              <span class="opt-desc">홈·팔로잉 등 본문 썸네일에 마우스를 올려 미리 봅니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-thumbnail-preview" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-sub" id="opt-thumbnail-preview-sub">
+          <div class="opt-sub-body flex-col gap-6">
+            <div class="flex-row-between w-full">
+              <div class="opt-info">
+                <span class="opt-label">미리보기 호버 지연 시간</span>
+                <span class="opt-desc">몇 ms 호버했을 때 나타나게 할지 설정 (ms)</span>
+              </div>
+              <input type="number" id="opt-hover-preview-delay" class="sel w-60p text-center" min="0" max="5000"
+                step="100">
+            </div>
+            <div class="flex-row-between w-full">
+              <div class="opt-info">
+                <span class="opt-label">방송 업타임 표기 방식</span>
+                <span class="opt-desc">썸네일 우측 상단 방송시간 표시</span>
+              </div>
+              <select id="opt-hover-uptime-format" class="sel">
+                <option value="off">표시 안 함</option>
+                <option value="hhmmss" selected>01:23:45 (기본)</option>
+                <option value="hm">01:23 (초 숨김)</option>
+                <option value="korean">1시간 23분 45초</option>
+              </select>
+            </div>
+            <div class="flex-col gap-4 w-full">
+              <div class="flex-row-between w-full">
+                <div class="opt-info">
+                  <span class="opt-label">미리보기 카드 크기</span>
+                </div>
+                <select id="opt-hover-card-size" class="sel">
+                  <option value="360">작게 (360px)</option>
+                  <option value="440" selected>보통 (기본 440px)</option>
+                  <option value="520">크게 (520px)</option>
+                  <option value="__custom__">직접 입력 (px)</option>
+                </select>
+              </div>
+              <input type="number" id="opt-hover-card-size-custom" class="sel w-full text-center mt-2" min="200"
+                max="1000" step="10" placeholder="원하는 크기 입력 (기본: 440px)" style="display:none;">
+            </div>
+            <div class="flex-row-between w-full">
+              <div class="opt-info">
+                <span class="opt-label">본문 팝업 상호작용 (클릭 허용)</span>
+                <span class="opt-desc">비활성화 시 팝업을 클릭할 수 없고 마우스를 떼면 즉시 사라집니다</span>
+              </div>
+              <button type="button" class="toggle toggle--sm" id="opt-hover-preview-interactive" role="switch"></button>
+            </div>
+          </div>
+        </div>
+        <div class="opt-item opt-item--col opt-item--has-sub" aria-expanded="true"
+          id="opt-hover-preview-video-container">
+          <div class="flex-row-between w-full">
+            <div class="opt-info"><span class="opt-label">비디오 미리보기 (오래 호버 시)</span><span class="opt-desc">Hls.js를 사용하여
+                720p로 재생합니다</span></div>
+            <button type="button" class="toggle toggle--sm" id="opt-hover-preview-video" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-sub opt-sub--flat" id="opt-hover-preview-video-sub">
+          <div class="opt-sub-body flex-col gap-6">
+            <div class="flex-row-between w-full">
+              <div class="opt-info"><span class="opt-label">미리보기 볼륨</span><span class="opt-desc">미리보기 비디오의 재생 볼륨을 조절합니다
+                  (0~100)</span></div>
+              <input type="number" id="opt-hover-preview-volume" class="sel w-60p text-center" min="0" max="100">
+            </div>
+            <div class="flex-row-between w-full">
+              <div class="opt-info">
+                <span class="opt-label">비디오 전환 지연 시간</span>
+                <span class="opt-desc">카드 노출 후 비디오 로드를 시작할 지연 시간 설정 (ms)</span>
+              </div>
+              <input type="number" id="opt-hover-preview-video-delay" class="sel w-60p text-center" min="0" max="5000"
+                step="100">
+            </div>
+          </div>
+        </div>
+        <!-- <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">영상 커스텀 정렬</span><span class="opt-desc">인원 많은 순/적은 순 정렬 버튼을
+              추가합니다</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-custom-video-sort" role="switch"></button>
+        </div> -->
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">시청 타이머 표시</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-watch-timer" role="switch"></button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+            <line x1="1" y1="1" x2="23" y2="23" />
+          </svg>
+          요소 숨김 (UI 정리)
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">홈 상단 배너 숨기기</span>
+            <span class="opt-desc">홈 메인 최상단 광고/안내 배너 제거</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-home-banner" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">홈 추천 방송 숨기기</span>
+            <span class="opt-desc">홈 상단 추천 라이브 캐러셀 제거</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-home-recommend" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">홈 중간 띠 배너 숨기기</span>
+            <span class="opt-desc">홈 중간에 표시되는 프로모션 광고 배너 제거</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-home-mid-banner" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">스트리머 숍 숨기기</span>
+            <span class="opt-desc">라이브 본문 상단의 스트리머 숍 영역 제거</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-streamer-shop" role="switch"></button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="4 7 4 4 20 4 20 7" />
+            <line x1="9" y1="20" x2="15" y2="20" />
+            <line x1="12" y1="4" x2="12" y2="20" />
+          </svg>
+          커스텀 타이포그래피
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item flex-col-start gap-10">
+          <div class="opt-info"><span class="opt-label">글꼴 선택</span></div>
+          <select class="sel w-full" id="opt-font-select">
+            <option value="">기본값</option>
+            <option value="Pretendard">Pretendard</option>
+            <option value="Wanted Sans Variable">Wanted Sans</option>
+            <option value="NanumSquareNeo">나눔스퀘어Neo</option>
+            <option value="Nanum Gothic">나눔고딕</option>
+            <option value="Nanum Myeongjo">나눔명조</option>
+            <option value="Noto Sans KR">Noto Sans KR</option>
+            <option value="IBM Plex Sans KR">IBM Plex Sans KR</option>
+            <option value="Gamja Flower">감자꽃</option>
+            <option value="Neodgm Pro">네오둥근모Pro</option>
+            <option value="__custom__">직접 입력 (CSS)</option>
+          </select>
+          <input type="text" class="input w-full" id="opt-font-custom" placeholder="font-family 이름"
+            style="display:none;">
+          <input type="text" class="input w-full mt-4" id="opt-font-import" placeholder="CSS @import URL (생략 가능)"
+            style="display:none;">
+        </div>
+        <div class="opt-item flex-col-start gap-8">
+          <div class="opt-info"><span class="opt-label">글꼴 두께</span></div>
+          <div class="segment" id="opt-font-weight-seg">
+            <button type="button" class="seg-btn" data-weight="300">얇음</button>
+            <button type="button" class="seg-btn" data-weight="400" aria-selected="true">일반</button>
+            <button type="button" class="seg-btn" data-weight="700">굵음</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Tab 4: 채팅 ═══ -->
+    <div id="tab-chat" class="tab-pane" role="tabpanel">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          채팅 편의
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">순위권 채팅 숨김</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-ranking-hide" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--has-sub" aria-expanded="false" id="cf-stamp-toggle-container">
+          <div class="opt-info"><span class="opt-label">채팅 타임스탬프</span></div>
+          <button type="button" class="toggle toggle--sm" id="cf-stamp-toggle" role="switch"></button>
+        </div>
+        <div class="opt-sub" id="cf-stamp-toggle-sub">
+          <div class="opt-sub-body">
+            <div class="opt-item opt-item--col" id="cf-stamp-format-container">
+              <div class="opt-info w-full"><span class="opt-label">타임스탬프 형식</span></div>
+              <select class="sel w-full" id="cf-stamp-format">
+                <option value="hh:mm:ss">hh:mm:ss (절대 시간)</option>
+                <option value="hh:mm">hh:mm (절대 시간)</option>
+                <option value="relative">1분 전 (상대 시간)</option>
+              </select>
+            </div>
+            <div class="opt-item opt-item--col" id="cf-stamp-size-container">
+              <div class="opt-info w-full"><span class="opt-label">타임스탬프 크기</span></div>
+              <div class="flex-row-between w-full mt-4">
+                <label class="custom-chk">
+                  <input type="checkbox" id="cf-stamp-size-linked">
+                  <span class="chk-box"></span>
+                  <span style="font-size: 11px; font-weight: 600;">폰트 크기 연동</span>
+                </label>
+                <div class="flex align-center gap-6">
+                  <input type="number" id="cf-stamp-size" class="input w-60p text-center font-bold-700" value="10">
+                  <span style="font-size:11px; color:var(--text-dim); font-weight:600;">px</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">폰트 크기</span></div>
+          <div class="flex align-center gap-6">
+            <input type="number" id="cf-font-size" class="input w-60p text-center font-bold-700" value="0">
+            <span style="font-size:11px; color:var(--text-dim); font-weight:600;">px</span>
+          </div>
+        </div>
+        <div class="opt-item opt-item--has-sub" aria-expanded="false" id="opt-hide-chat-nickname-container">
+          <div class="opt-info">
+            <span class="opt-label">시청자 닉네임 숨기기</span>
+            <span class="opt-desc">채팅창에서 시청자 닉네임을 보이지 않게 처리</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-chat-nickname" role="switch"></button>
+        </div>
+        <div class="opt-sub" id="opt-hide-chat-nickname-sub">
+          <div class="opt-item opt-item--col">
+            <div class="opt-info w-full">
+              <span class="opt-label">닉네임 최대 글자 수</span>
+              <span class="opt-desc">초과하는 긴 닉네임 뒷부분 생략 (0 = 비활성)</span>
+            </div>
+            <div class="flex align-center gap-6 mt-4 align-self-start">
+              <input type="number" id="opt-chat-nickname-max-length"
+                class="input w-70p text-center font-bold-700 input--sm" value="0" min="0" max="50">
+              <span style="font-size:11px; color:var(--text-dim); font-weight:600;">글자</span>
+            </div>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">투명 닉네임 복구</span>
+            <span class="opt-desc">투명색(Alpha 0)으로 설정된 특정 구독자 닉네임을 원래 색상으로 복구합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-restore-transparent-nickname" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--has-sub" aria-expanded="false" id="opt-hide-chat-badge-container">
+          <div class="opt-info">
+            <span class="opt-label">시청자 뱃지 숨기기</span>
+            <span class="opt-desc">채팅창에서 시청자 뱃지(구독, 활동 등)를 보이지 않게 처리</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-hide-chat-badge" role="switch"></button>
+        </div>
+        <div class="opt-sub" id="opt-hide-chat-badge-sub">
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">구독 뱃지는 유지</span>
+              <span class="opt-desc">전체 숨김 중에도 구독 뱃지는 계속 표시</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-keep-badge-subscription" role="switch"></button>
+          </div>
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">활동 뱃지는 유지</span>
+              <span class="opt-desc">전체 숨김 중에도 활동(팬·치즈) 뱃지는 계속 표시</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-keep-badge-activity" role="switch"></button>
+          </div>
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">치트키 뱃지는 유지</span>
+              <span class="opt-desc">전체 숨김 중에도 치트키 뱃지는 계속 표시</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-keep-badge-cheatkey" role="switch"></button>
+          </div>
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">역할 뱃지는 유지</span>
+              <span class="opt-desc">전체 숨김 중에도 역할(스트리머·매니저) 뱃지는 계속 표시</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-keep-badge-role" role="switch"></button>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">채팅 디바이스 아이콘 표시</span>
+            <span class="opt-desc">채팅 닉네임 옆에 PC/모바일 기기 아이콘을 표시합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-device-icon" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">이모티콘 복사/붙여넣기</span>
+            <span class="opt-desc">채팅창 내 이모티콘을 클릭해 복사하거나 복사된 이모티콘 단축어를 붙여넣어 전송합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-emoji-copypaste" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">채팅 통째로 복사/붙여넣기</span>
+            <span class="opt-desc">채팅 텍스트 영역을 클릭해 텍스트와 이모티콘 전체를 복사하고 입력창에 바로 붙여넣습니다.</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-message-copypaste" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">채팅 내보내기 버튼 표시</span>
+            <span class="opt-desc">채팅창 상단에 채팅 내보내기(TXT 저장) 아이콘을 표시합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-export" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">채팅창 리사이즈</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-resize" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">좌측 채팅</span>
+            <span class="opt-desc">채팅창을 플레이어 좌측으로 이동시킵니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-left-chat" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">입력창 지연시간 표시</span>
+            <span class="opt-desc">채팅 입력창 옆에 실시간 영상/버퍼 지연시간을 표시합니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-latency-display" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--has-sub" aria-expanded="true" id="opt-blinded-restore-container">
+          <div class="opt-info">
+            <span class="opt-label">블라인드 메시지 복구</span>
+            <span class="opt-desc">마우스 호버 시 원본 내용 확인 가능</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-blinded-restore" role="switch"></button>
+        </div>
+        <div class="opt-sub" id="opt-blinded-restore-sub">
+          <div class="opt-item" style="padding-left: 15px;">
+            <div class="opt-info">
+              <span class="opt-label">블라인드 메시지 항상 표시</span>
+              <span class="opt-desc">호버 없이 즉시 원본 내용을 표시합니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-blinded-auto-restore" role="switch"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          이모티콘 매크로 (단축어)
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item opt-item--col">
+          <div class="opt-info w-full mb-8">
+            <span class="opt-label">단축어 매크로 등록</span>
+            <span class="opt-desc">채팅창에 키워드를 입력하고 <kbd>Tab</kbd> 키를 누르면 자동 변환됩니다.</span>
+          </div>
+          <div class="emoji-packs-container w-full" id="chat-macro-emoji-packs"
+            style="max-height: 200px; overflow-y: auto; border: 1px solid var(--cqc-border); border-radius: 6px; padding: 4px; background: rgba(0,0,0,0.1);">
+            <!-- 채널 이모티콘 렌더링 영역 (단일 선택 모드) -->
+          </div>
+          <div class="input-row mt-8 w-full">
+            <input type="text" id="chat-macro-keyword" class="input flex-1" placeholder="단축어 키워드 (예: 으흐흐)">
+            <button class="btn btn--pri font-11" id="chat-macro-add" style="width: 50px; height: 32px;">추가</button>
+          </div>
+        </div>
+        <div class="opt-item opt-item--col">
+          <div class="opt-info w-full mb-8">
+            <span class="opt-label">등록된 매크로 목록</span>
+            <span class="opt-desc">클릭하여 삭제할 수 있습니다.</span>
+          </div>
+          <div id="chat-macro-list" class="tag-list w-full" style="gap: 6px;">
+            <!-- 저장된 매크로 렌더링 영역 -->
+          </div>
+        </div>
+      </div>
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+          </svg>
+          채팅 모아보기
+        </h2>
+      </div>
+      <div class="opt-card">
+
+        <!-- 아이콘 표시 여부 -->
+        <div class="opt-list">
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">채팅 모아보기 아이콘 표시</span>
+              <span class="opt-desc">채팅창 상단에 모아보기 아이콘을 표시합니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-chat-collector-icon" role="switch"></button>
+          </div>
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">모아보기 분리 모드 (상단 표시)</span>
+              <span class="opt-desc">전체 채팅을 유지하고 모아보기 창을 상단에 별도로 배치합니다</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-chat-collector-split" role="switch"></button>
+          </div>
+        </div>
+
+        <div class="opt-list" style="margin-top: 10px;">
+          <div class="opt-item">
+            <div class="opt-info">
+              <span class="opt-label">모아보기 채팅 보관 기일</span>
+              <span class="opt-desc">설정한 기일이 지나면 수집된 채팅이 삭제됩니다</span>
+            </div>
+            <select class="input" id="opt-chat-collector-retention" style="width: auto; min-width: 120px;">
+              <option value="0">브라우저 종료 시 삭제</option>
+              <option value="12">12시간</option>
+              <option value="24">24시간 (1일)</option>
+              <option value="72">72시간 (3일)</option>
+              <option value="168">168시간 (7일)</option>
+              <option value="720">720시간 (30일)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 수집 대상 역할 -->
+        <div class="opt-item opt-item--col gap-10">
+          <div class="opt-sub-head p-0 mb-4">
+            <svg class="fm-icon--role" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            수집 대상 역할
+          </div>
+          <div class="opt-sub-body p-0">
+            <div class="filter-grid">
+              <label class="filter-chip filter-chip--streamer">
+                <input type="checkbox" id="opt-chat-collector-role-streamer" value="streamer">
+                <span class="filter-chip__indicator"></span>
+                <span class="filter-chip__label">스트리머</span>
+              </label>
+              <label class="filter-chip filter-chip--manager">
+                <input type="checkbox" id="opt-chat-collector-role-manager" value="manager">
+                <span class="filter-chip__indicator"></span>
+                <span class="filter-chip__label">매니저</span>
+              </label>
+              <label class="filter-chip filter-chip--donation">
+                <input type="checkbox" id="opt-chat-collector-role-donation" value="donation">
+                <span class="filter-chip__indicator"></span>
+                <span class="filter-chip__label">후원(치즈)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 지정 유저 수집 -->
+        <div class="opt-item opt-item--col gap-10">
+          <div class="opt-sub-head p-0 mb-4">
+            <svg class="fm-icon--user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+            지정 유저 수집
+            <span class="filter-module__count" id="opt-chat-collector-user-count">0</span>
+          </div>
+          <div class="opt-sub-body p-0">
+            <div class="tags-box" id="opt-chat-collector-user-tags"></div>
+            <div id="opt-chat-collector-user-empty" class="filter-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              지정된 유저가 없습니다
+            </div>
+            <div class="input-row">
+              <input type="text" id="opt-chat-collector-user-input" class="input" placeholder="추가할 유저 닉네임">
+              <button class="filter-btn filter-btn--add" id="opt-chat-collector-user-add">추가</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          채팅 필터링
+        </h2>
+      </div>
+      <div class="opt-card">
+        <!-- 메인 활성화 스위치 (채팅 편의 opt-item과 동일한 디자인) -->
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">채팅 필터 활성화</span>
+            <span class="opt-desc">등록된 단어가 포함된 채팅을 가로채서 숨깁니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-chat-filter" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--col" id="opt-chat-filter-mode-container">
+          <div class="opt-info w-full">
+            <span class="opt-label">필터링 방식</span>
+            <span class="opt-desc">차단된 채팅을 처리할 방식 선택 (기본: 사라지게 하기)</span>
+          </div>
+          <select class="sel w-full" id="opt-chat-filter-mode">
+            <option value="hide">사라지게 하기 (기본 동작)</option>
+            <option value="blur">블러 처리 (흐릿하게 표시 - CSS 처리)</option>
+          </select>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <!-- 키워드 차단 -->
+        <div class="opt-sub-head">
+          <svg class="fm-icon--kw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          키워드 차단
+          <span class="filter-module__count" id="cf-kw-count">0</span>
+        </div>
+        <div class="opt-sub-body">
+          <div class="tags-box" id="chat-filter-tags"></div>
+          <div id="cf-kw-empty" class="filter-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            등록된 키워드가 없습니다
+          </div>
+          <div class="input-row">
+            <input type="text" id="chat-filter-keyword" class="input" placeholder="차단할 단어 입력">
+            <label class="custom-chk">
+              <input type="checkbox" id="chat-filter-is-regex">
+              <span class="chk-box"></span>
+              정규식
+            </label>
+            <button class="filter-btn filter-btn--add" id="chat-filter-add">추가</button>
+          </div>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <!-- 유저 차단 -->
+        <div class="opt-sub-head">
+          <svg class="fm-icon--user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <line x1="17" y1="8" x2="23" y2="14" />
+            <line x1="23" y1="8" x2="17" y2="14" />
+          </svg>
+          유저 차단
+          <span class="filter-module__count" id="cf-user-count">0</span>
+        </div>
+        <div class="opt-sub-body">
+          <div class="tags-box" id="chat-filter-user-tags"></div>
+          <div id="cf-user-empty" class="filter-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            차단된 유저가 없습니다
+          </div>
+          <div class="input-row">
+            <input type="text" id="chat-filter-user" class="input" placeholder="차단할 유저 닉네임" autocomplete="off">
+          </div>
+          <div class="input-row">
+            <select id="chat-filter-user-channel" class="filter-select flex-1">
+              <option value="current">현재 채널에만 적용</option>
+              <option value="all">모든 채널에 적용</option>
+            </select>
+            <button class="filter-btn filter-btn--add" id="chat-filter-user-add">추가</button>
+          </div>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <!-- 역할 차단 -->
+        <div class="opt-sub-head">
+          <svg class="fm-icon--role" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          역할 차단
+        </div>
+        <div class="opt-sub-body">
+          <div id="cf-dynamic-roles" class="filter-grid">
+            <div class="filter-empty col-span-full">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              채팅에서 역할이 감지되면 자동으로 표시됩니다
+            </div>
+          </div>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <!-- 이모티콘 차단 -->
+        <div class="opt-sub-head">
+          <svg style="color: #fca5a5;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+            <line x1="9" y1="9" x2="9.01" y2="9" />
+            <line x1="15" y1="9" x2="15.01" y2="9" />
+          </svg>
+          이모티콘 차단
+        </div>
+        <div class="opt-sub-body">
+          <div id="cf-emoji-packs" class="emoji-pack-container">
+            <div class="filter-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              현재 채널의 이모티콘 정보를 불러오는 중입니다...
+            </div>
+          </div>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <!-- 기기 차단 -->
+        <div class="opt-sub-head">
+          <svg class="fm-icon--os" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          기기 차단
+        </div>
+        <div class="opt-sub-body">
+          <div id="cf-dynamic-os" class="filter-grid">
+            <div class="filter-empty col-span-full">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              기기 정보가 감지되면 자동으로 표시됩니다
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            style="width:16px; height:16px; color: #a855f7;">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+            <line x1="7" y1="7" x2="7.01" y2="7" />
+          </svg>
+          방송/스트리머 차단 필터
+        </h2>
+      </div>
+      <div class="opt-card">
+        <!-- 카테고리 태그 차단 -->
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">카테고리 태그 차단 활성화</span>
+            <span class="opt-desc">차단된 카테고리의 생방송 카드를 숨깁니다</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-category-block" role="switch"></button>
+        </div>
+
+        <div id="opt-category-block-container" style="display: none;">
+          <div class="opt-divider"></div>
+
+          <div class="opt-sub-head">
+            카테고리 차단 목록
+            <span class="filter-module__count" id="cf-category-count">0</span>
+          </div>
+          <div class="opt-sub-body">
+            <div class="tags-box" id="category-block-tags"></div>
+            <div id="cf-category-empty" class="filter-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              차단된 카테고리가 없습니다
+            </div>
+            <div class="input-row">
+              <input type="text" id="category-block-tag" class="input" placeholder="차단할 카테고리 태그 입력">
+              <button class="filter-btn filter-btn--add" id="category-block-add">추가</button>
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+              <button class="btn btn--xs" id="category-block-recommend-vtuber"
+                style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);">버튜버 차단</button>
+            </div>
+          </div>
+
+          <div class="opt-divider"></div>
+
+          <div class="opt-sub-head">
+            스트리머 차단 목록
+            <span class="filter-module__count" id="cf-streamer-count">0</span>
+          </div>
+          <div class="opt-sub-body">
+            <div class="tags-box" id="streamer-block-tags"></div>
+            <div id="cf-streamer-empty" class="filter-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              차단된 스트리머가 없습니다
+            </div>
+            <div class="input-row">
+              <input type="text" id="streamer-block-name" class="input" placeholder="차단할 스트리머 이름 입력">
+              <button class="filter-btn filter-btn--add" id="streamer-block-add">추가</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ Tab 5: 멀티뷰 ═══ -->
+    <div id="tab-multiview" class="tab-pane" role="tabpanel">
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          멀티뷰 컨트롤
+        </h2>
+      </div>
+
+      <div class="opt-card">
+        <!-- 1. 영상 멀티뷰 섹션 -->
+        <div class="opt-sub-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-accent">
+            <path d="M23 7l-7 5 7 5V7z" />
+            <rect x="1" y="5" width="15" height="12" rx="2" ry="2" />
+          </svg>
+          영상 멀티뷰 대시보드
+          <button type="button" class="btn btn--inline-xs" id="btn-mv-following">팔로잉 가져오기</button>
+          <span class="filter-module__count" id="mv-count">0/4</span>
+        </div>
+
+        <div class="opt-sub-body">
+          <div id="mv-list" class="mv-list-box">
+            <div class="text-center text-muted font-11 mt-12">추가된 채널이 없습니다.</div>
+          </div>
+
+          <div class="input-row mt-4">
+            <input type="text" id="mv-input" class="input" placeholder="채널 URL 또는 ID 입력">
+            <button class="filter-btn filter-btn--add" id="btn-mv-add">추가</button>
+          </div>
+          <div id="mv-error" class="text-danger font-10 -mt-4" style="display: none;">올바른 URL/ID가 아닙니다.</div>
+
+          <div id="mv-following-container" class="following-box mt-8" style="display: none;">
+            <div class="text-center text-muted font-10 mb-6" id="mv-following-status">팔로잉 채널을 불러오는 중...</div>
+            <div id="mv-following-list" class="grid-col-1 gap-4"></div>
+          </div>
+
+          <button class="btn btn--pri btn--lg w-full mt-12 font-13" id="btn-mv-start">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            멀티뷰 엔진 시작
+          </button>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <!-- 3. 채팅 멀티뷰 섹션 -->
+        <div class="opt-sub-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-info">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          채팅 멀티뷰
+          <button type="button" class="btn btn--inline-xs" id="btn-mc-following">팔로잉 가져오기</button>
+          <span class="filter-module__count" id="mc-count">0/6</span>
+        </div>
+
+        <div class="opt-sub-body">
+          <div id="mc-list" class="mv-list-box">
+            <div class="text-center text-muted font-11 mt-4">추가된 채널이 없습니다.</div>
+          </div>
+
+          <div class="input-row mt-4">
+            <input type="text" id="mc-input" class="input" placeholder="채널 URL 또는 ID 입력">
+            <button class="filter-btn filter-btn--add" id="btn-mc-add">추가</button>
+          </div>
+          <div id="mc-error" class="text-danger font-10 -mt-4" style="display: none;">올바른 URL/ID가 아닙니다.</div>
+
+          <div id="mc-following-container" class="following-box mt-8" style="display: none;">
+            <div class="text-center text-muted font-10 mb-6" id="mc-following-status">팔로잉 채널을 불러오는 중...</div>
+            <div id="mc-following-list" class="grid-col-1 gap-4"></div>
+          </div>
+
+          <button class="btn btn--sec btn--md w-full mt-12 font-11" id="btn-mc-open-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="13" height="13">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            채팅 창 모두 열기
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Tab 6: 고급 (셀렉터 편집기) ═══ -->
+    <div id="tab-advanced" class="tab-pane" role="tabpanel">
+      <div class="sec-head">
+        <h2 class="sec-title" style="color: #ff6b6b;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M10 2v7.31L2.08 20.24A2 2 0 0 0 3.8 23h16.4a2 2 0 0 0 1.72-2.76L14 9.31V2h-4z"></path>
+            <path d="M8 2h8"></path>
+            <path d="M6.3 15h11.4"></path>
+          </svg>
+          실험실 기능
+        </h2>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          시스템 편의 및 성능
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">통나무 파워 자동 수령</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-power" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">본방 우선 적립</span><span class="opt-desc">본방 켜진 동안 다른 방 통나무 적립
+              차단</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-power-primary" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--col">
+          <div class="opt-info"><span class="opt-label">본방 channelId / URL</span><span class="opt-desc">본방 우선 켜짐 시 이 채널만
+              적립</span></div>
+          <input class="sel mt-4" type="text" id="opt-power-primary-channel" placeholder="channelId 또는 chzzk 주소 붙여넣기"
+            spellcheck="false" style="width:100%;" />
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">카운트 초기화 주기</span></div>
+          <select class="sel" id="opt-power-reset-hours">
+            <option value="0">초기화 없음</option>
+            <option value="1">1시간마다</option>
+            <option value="6">6시간마다</option>
+            <option value="12">12시간마다</option>
+            <option value="24">매일 (24시간)</option>
+          </select>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">통나무 집중 모드</span><span class="opt-desc">상태 아이콘 숨김</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-focus-mode" role="switch"></button>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info"><span class="opt-label">우클릭 스트림 통계</span></div>
+          <button type="button" class="toggle toggle--sm" id="opt-stats-contextmenu" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--col pb-20" id="power-manual-reset-section" style="display:none;">
+          <div class="opt-info">
+            <span class="opt-label">채널별 수동 초기화</span>
+          </div>
+          <div id="power-channel-list" class="power-ch-list"></div>
+          <div class="flex gap-6 mt-4 flex-wrap">
+            <button type="button" class="btn btn--xs btn--sec" id="btn-power-refresh-channels">목록 갱신</button>
+            <button type="button" class="btn btn--xs btn--pri" id="btn-open-power-stats">🪵 통나무 통계</button>
+            <button type="button" class="btn btn--xs btn--pri" id="btn-open-stream-stats">📺 시청시간/품질</button>
+            <button type="button" class="btn btn--xs btn--danger" id="btn-power-reset-all">전체 초기화</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M10 8l6 4-6 4V8z" />
+          </svg>
+          라이브 모니터링
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item opt-item--col align-stretch" id="opt-live-noti-container">
+          <div class="flex-row-between w-full">
+            <div class="opt-info">
+              <span class="opt-label">생방송 시작 알림</span>
+              <span class="opt-desc">팔로우 채널 방송 시작 시 알림 발송 (일부 채널 제외 가능)</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-live-noti" role="switch"></button>
+          </div>
+          <div id="live-noti-block-section" class="mt-10" style="display: none;">
+            <div class="flex-row-between mb-8 align-center">
+              <span class="font-11 text-sec">알림 필터 방식</span>
+              <select class="sel" id="opt-live-noti-mode"
+                style="width: auto; height: 28px; font-size: 11px; padding: 0 8px;">
+                <option value="blacklist">블랙리스트 (제외 채널 지정)</option>
+                <option value="whitelist">화이트리스트 (알림받을 채널 지정)</option>
+              </select>
+            </div>
+            <div id="live-noti-block-title" class="font-11 text-sec mb-4">알림 제외 채널 설정</div>
+            <div class="input-row mb-8">
+              <input type="text" id="live-noti-block-url" class="input" placeholder="제외할 채널 URL 또는 채널 ID 입력">
+              <button class="btn btn--pri w-50p h-32 font-11" id="live-noti-block-add">추가</button>
+            </div>
+            <div id="live-noti-block-channel-list" class="flex flex-wrap gap-6"></div>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">방송 시작 시 자동 새로고침</span>
+            <span class="opt-desc">열려있는 채널 페이지 자동 갱신</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-live-reload" role="switch"></button>
+        </div>
+        <div class="opt-item opt-item--col align-stretch" id="opt-auto-open-container">
+          <div class="flex-row-between w-full">
+            <div class="opt-info">
+              <span class="opt-label">방송 시작 시 자동 탭 열기</span>
+              <span class="opt-desc">등록된 채널이 방송을 시작하면 자동으로 새 탭 열기</span>
+            </div>
+            <button type="button" class="toggle toggle--sm" id="opt-live-auto-open" role="switch"></button>
+          </div>
+          <div id="auto-open-channels-section" class="mt-10" style="display: none;">
+            <div class="input-row mb-8">
+              <input type="text" id="auto-open-url" class="input" placeholder="채널 URL 또는 채널 ID 입력">
+              <button class="btn btn--pri w-50p h-32 font-11" id="auto-open-add">추가</button>
+            </div>
+            <div id="auto-open-channel-list" class="flex flex-wrap gap-6"></div>
+          </div>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">알림 체크 주기</span>
+            <span class="opt-desc">백그라운드 모니터링 간격</span>
+          </div>
+          <select class="sel" id="opt-live-interval">
+            <option value="1.5">1.5분 (매우 빠름)</option>
+            <option value="3">3분 (기본)</option>
+            <option value="5">5분 (안정적)</option>
+            <option value="10">10분 (절전)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          설정창 화면 및 테마
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">설정창 테마</span>
+            <span class="opt-desc">설정 팝업 패널 색상 테마</span>
+          </div>
+          <select class="sel" id="opt-popup-theme">
+            <option value="dark">다크 모드 (기본)</option>
+            <option value="light">라이트 모드</option>
+          </select>
+        </div>
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">설정창 확대 비율 (글자 크기)</span>
+            <span class="opt-desc">고해상도(4K 등) 모니터용 설정창 배율 조절</span>
+          </div>
+          <select class="sel" id="opt-popup-zoom">
+            <option value="90">90% (축소)</option>
+            <option value="100">100% (기본)</option>
+            <option value="110">110% (약간 확대)</option>
+            <option value="120">120% (확대 - 4K 권장)</option>
+            <option value="125">125% (대형)</option>
+            <option value="135">135% (특대)</option>
+            <option value="150">150% (최대)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          개발자 옵션
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item">
+          <div class="opt-info">
+            <span class="opt-label">GC 모니터</span>
+            <span class="opt-desc">메모리 성장 감지 · DevTools → window.cqcGC</span>
+          </div>
+          <button type="button" class="toggle toggle--sm" id="opt-gc-monitor" role="switch"></button>
+        </div>
+        <div id="gc-flag-warning" class="p-warning flex-col gap-6" style="display:none;">
+          <div class="warning-banner">
+            <svg class="warning-banner__icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <div>
+              <div class="warning-banner__title">--expose-gc 플래그 미감지 — 사용 불가</div>
+              <div class="warning-banner__desc">window.gc()가 없어 GC 모니터를 활성화할 수 없습니다. Chrome 실행 시 아래 플래그를 추가하세요:</div>
+              <div class="warning-banner__code">--js-flags=--expose-gc</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          설정 백업 및 복원
+        </h2>
+      </div>
+      <div class="opt-card">
+        <div class="opt-item flex-col align-start gap-12 p-backup">
+          <div class="opt-info">
+            <span class="opt-label">현재 설정을 파일로 저장하거나 불러옵니다</span>
+            <span class="opt-desc">단어 필터링, 멀티뷰 목록 등 모든 설정이 포함됩니다</span>
+          </div>
+          <div class="flex gap-8 w-full">
+            <button type="button" class="btn btn--sec btn--md flex-1 font-11" id="btn-export-settings">
+              설정 내보내기 (.json)
+            </button>
+            <button type="button" class="btn btn--pri btn--md flex-1 font-11" id="btn-import-settings">
+              설정 불러오기
+            </button>
+          </div>
+          <input type="file" id="input-import-settings" accept=".json" style="display:none;">
+        </div>
+        <div class="opt-divider"></div>
+        <div class="opt-sub-head text-warning-hard">
+          채팅 모아보기 수동 초기화
+        </div>
+        <div class="opt-sub-body p-sub-body">
+          <div class="font-11 text-muted mb-12">
+            채팅 모아보기 상태가 꼬였을때 모아보기를 상태값을 초기화해 기본 채팅방으로 수동 복구합니다.
+          </div>
+          <button type="button" class="btn btn--sec btn--md w-full font-12" id="btn-reset-chat-collector">
+            기본 채팅방으로 수동 초기화
+          </button>
+        </div>
+        <div class="opt-divider"></div>
+        <div class="opt-sub-head text-danger-hard">
+          전체 설정 초기화
+        </div>
+        <div class="opt-sub-body p-sub-body">
+          <div class="font-11 text-muted mb-12">
+            확장 프로그램의 모든 설정을 기본값으로 초기화합니다.
+          </div>
+          <button class="btn btn--danger btn--md w-full font-12" id="btn-reset-all-settings">
+            모든 설정 초기화
+          </button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2 class="sec-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          고급 설정
+        </h2>
+      </div>
+
+      <div class="opt-card">
+        <div class="opt-sub-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-accent">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2v20M2 12h20"></path>
+          </svg>
+          인터랙티브 요소 피커
+        </div>
+        <div class="opt-sub-body p-sub-body">
+          <div class="font-11 text-muted mb-12">
+            치지직 화면 내 요소를 직접 클릭해 셀렉터를 갱신합니다. React Fiber 구조 및 CSS 모듈 프리픽스를 우회하여 안정적인 셀렉터를 자동 생성합니다.
+          </div>
+          <button class="btn btn--pri btn--lg w-full font-13" id="btn-start-inspector">
+            셀렉터 편집기 열기
+          </button>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <div class="opt-sub-head text-info">
+          커스텀 셀렉터 초기화
+        </div>
+        <div class="opt-sub-body p-sub-body">
+          <div class="font-11 text-muted mb-12" id="override-summary">
+            등록된 사용자 지정 셀렉터: 0개
+          </div>
+          <button class="btn btn--danger btn--md w-full font-12" id="btn-reset-selectors">
+            모든 커스텀 셀렉터 초기화
+          </button>
+        </div>
+
+        <div class="opt-divider"></div>
+
+        <div class="opt-sub-head text-accent">
+          초기 설정 가이드
+        </div>
+        <div class="opt-sub-body p-sub-body">
+          <div class="font-11 text-muted mb-12">
+            첫 설치 가이드 화면(옵션 프리셋 및 성능 선택 티켓)을 다시 띄웁니다.
+          </div>
+          <button class="btn btn--sec btn--md w-full font-12 text-accent border-accent-glow" id="btn-restart-wizard">
+            설정 가이드 다시 실행
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+
+</body>
+
+</html>
